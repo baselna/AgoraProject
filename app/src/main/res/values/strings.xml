@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">My Application</string>
+    <string name="registration_form_title">Registration</string>
+    <string name="donor_name">User Name</string>
+    <string name="donor_phone">User Phone</string>
+    <string name="terms">I agree to all terms and conditions</string>
+    <string name="action_settings">Settings</string>
+    <string name="add_product">Add Product</string>
+
 </resources>

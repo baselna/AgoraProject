@@ -46,9 +46,6 @@ public class SecondActivity extends AppCompatActivity {
         signOutBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(gsc.getSignInIntent());
-                Boolean shubtrj3 = task.isComplete();
-                System.out.println("hhhhhhhhhhhhh");
                 signOut();
 
             }
@@ -59,12 +56,8 @@ public class SecondActivity extends AppCompatActivity {
     }
 
     void signOut(){
-        gsc.revokeAccess().addOnCompleteListener(this, task -> {
-            Task<GoogleSignInAccount> rr = GoogleSignIn.getSignedInAccountFromIntent(gsc.getSignInIntent());
-            gsc.revokeAccess();
-                    gsc.signOut();
+        gsc.signOut().addOnCompleteListener(this, task -> {
                     finish();
-                    System.out.print("hhhhhhhhhhhhh");
                     startActivity(new Intent(SecondActivity.this, MainActivity.class));
                 });
     }

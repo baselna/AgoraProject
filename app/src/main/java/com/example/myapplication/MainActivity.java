@@ -29,6 +29,7 @@ import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.tasks.Task;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -51,7 +52,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
     private Button button_send_post;
     private Button button_send_get;
     private TextView textView_response;
-    private String url="http://192.168.68.114:3000/";//****Put your  URL here******
+    private String url="http://132.69.215.47:3000";//****Put your  URL here******
     private String POST="POST";
     private String GET="GET";
     SignInButton signInButton;
@@ -60,9 +61,12 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
     private static final int RC_SIGN_IN = 1;
     public static final MediaType JSON = MediaType.get("application/json; charset=utf-8");
 
+    private static MainActivity instance;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        instance= this;
         setContentView(R.layout.activity_main);
 
         textField_message=findViewById(R.id.txtField_message);
@@ -103,6 +107,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
         GoogleSignInAccount acct = GoogleSignIn.getLastSignedInAccount(this);
         if(acct!=null){
             navigateToSecondActivity();
+            //navigateToHomeActivity();
         }
         ActivityResultLauncher<Intent> activityResultLaunch = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
@@ -135,15 +140,28 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
         Intent intent = new Intent(MainActivity.this,SecondActivity.class);
         startActivity(intent);
     }
+
+    void navigateToHomeActivity(String email){
+        finish();
+        Intent intent = new Intent(MainActivity.this,HomePage.class);
+        intent.putExtra("email", email);
+        startActivity(intent);
+    }
+
+    void navigateToRegistrationActivity(String email){
+        finish();
+        Intent intent = new Intent(MainActivity.this,Registration.class);
+        intent.putExtra("email", email);
+        startActivity(intent);
+    }
     private void handleSignInResult(GoogleSignInResult result){
         if(result.isSuccess()){
             JSONObject obj = new JSONObject();
             //Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(result);
             try {
-                obj.put("email:", result.getSignInAccount().getEmail());
-                String wrap = url + "/login";
+                obj.put("email", result.getSignInAccount().getEmail());
+                String wrap = "/login";
                 SendRequest2(wrap,obj.toString());
-                navigateToSecondActivity();
 
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -210,7 +228,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
     }
 
     void SendRequest2(String url, String json) {
-
+        url = this.url + url;
         OkHttpClient client = new OkHttpClient();
         RequestBody body = RequestBody.create(json, JSON);
         Request request = new Request.Builder()
@@ -232,11 +250,36 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
 
                 // Read data on the worker thread
                 final String responseData = response.body().string();
+                JSONObject Jobject = null;
+                try {
+                    Jobject = new JSONObject(responseData);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                if(Jobject.has("phone")){
+                    try {
+                        navigateToHomeActivity(Jobject.get("email").toString());
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    //navigateToSecondActivity();
+                }
+                else{
+                    try {
+                        navigateToRegistrationActivity(Jobject.get("email").toString());
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
                 //System.out.print(response.headers());
                 // Run view-related code back on the main thread.
                 // Here we display the response message in our text view
                 MainActivity.this.runOnUiThread(() -> textView_response.setText(responseData));
             }
         });
+    }
+
+    public static MainActivity getInstance(){
+        return instance;
     }
 }
