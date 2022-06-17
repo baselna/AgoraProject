@@ -25,7 +25,7 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 
 public class HomePage extends AppCompatActivity {
-    private String url ="http://132.69.215.47:3000";
+    private String url ="http://10.100.102.195:3000";
     public static final MediaType JSON = MediaType.get("application/json; charset=utf-8");
     private String user_phone;
     private Button add_product_button;

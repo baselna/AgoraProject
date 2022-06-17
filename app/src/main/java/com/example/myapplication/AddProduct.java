@@ -1,24 +1,40 @@
 package com.example.myapplication;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
+import android.content.ContentUris;
+import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.DocumentsContract;
+import android.provider.MediaStore;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Spinner;
-import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -31,20 +47,29 @@ import okhttp3.Response;
 public class AddProduct extends AppCompatActivity implements
         AdapterView.OnItemSelectedListener {
     public static final MediaType JSON = MediaType.get("application/json; charset=utf-8");
-    EditText nameEditText;
+        EditText nameEditText;
         EditText descriptionEditText;
         int chosen_rating, chosen_category;
         String chosen_city;
+        Bitmap chosen_img;
         String donor_email;
+
 
         ArrayList<String> array_cities;
         Spinner city_spin;
         String[] rating = { "very poor", "poor", "fair", "good", "very good"};
         Spinner rating_spin;
-        String[] category = { "cat1", "cat2", "cat3", "cat4", "cat5"};
+        String[] category = { "appliances", "clothing", "furniture", "plants and animals", "various"};
         String[] new_cities;
         Spinner category_spin;
-        private String url="http://132.69.215.47:3000";//****Put your  URL here******
+        private String url="http://10.100.102.195:3000";//****Put your  URL here******
+    // One Button
+        Button BSelectImage;
+
+    // One Preview Image
+        ImageView IVPreviewImage;
+
+        String selectedImagePath;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,11 +77,14 @@ public class AddProduct extends AppCompatActivity implements
         setContentView(R.layout.activity_add_product);
         nameEditText = (EditText) findViewById(R.id.names);
         descriptionEditText = (EditText) findViewById(R.id.description);
+        // register the UI widgets with their appropriate IDs
+        BSelectImage = findViewById(R.id.BSelectImage);
+        //IVPreviewImage = findViewById(R.id.IVPreviewImage);
 
         array_cities = new ArrayList<String>();
         get_all_cities();
         try {
-            Thread.sleep(120000);
+            Thread.sleep(1000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -86,6 +114,148 @@ public class AddProduct extends AppCompatActivity implements
         category_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         //Setting the ArrayAdapter data on the Spinner
         category_spin.setAdapter(category_adapter);
+
+
+        ActivityResultLauncher<Intent> launchSomeActivity
+                = registerForActivityResult(
+                new ActivityResultContracts
+                        .StartActivityForResult(),
+                result -> {
+                    if (result.getResultCode()
+                            == Activity.RESULT_OK) {
+                        Intent data = result.getData();
+                        // do your operation from here....
+                        if (data != null
+                                && data.getData() != null) {
+                            Uri uri = data.getData();
+                            selectedImagePath = getPath(getApplicationContext(), uri);
+                            EditText imgPath = findViewById(R.id.imgPath);
+                            imgPath.setText(selectedImagePath);
+//                            Bitmap selectedImageBitmap = null;
+//                            try {
+//                                selectedImageBitmap
+//                                        = MediaStore.Images.Media.getBitmap(
+//                                        this.getContentResolver(),
+//                                        selectedImageUri);
+//                            }
+//                            catch (IOException e) {
+//                                e.printStackTrace();
+//                            }
+//                            chosen_img = selectedImageBitmap;
+//                            IVPreviewImage.setImageBitmap(
+//                                    selectedImageBitmap);
+                        }
+                    }
+                });
+
+        BSelectImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent();
+                i.setType("*/*");
+                i.setAction(Intent.ACTION_GET_CONTENT);
+
+                launchSomeActivity.launch(i);
+            }
+    });
+    }
+
+    // Implementation of the getPath() method and all its requirements is taken from the StackOverflow Paul Burke's answer: https://stackoverflow.com/a/20559175/5426539
+    public static String getPath(final Context context, final Uri uri) {
+
+        final boolean isKitKat = Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT;
+
+        // DocumentProvider
+        if (isKitKat && DocumentsContract.isDocumentUri(context, uri)) {
+            // ExternalStorageProvider
+            if (isExternalStorageDocument(uri)) {
+                final String docId = DocumentsContract.getDocumentId(uri);
+                final String[] split = docId.split(":");
+                final String type = split[0];
+
+                if ("primary".equalsIgnoreCase(type)) {
+                    return Environment.getExternalStorageDirectory() + "/" + split[1];
+                }
+
+                // TODO handle non-primary volumes
+            }
+            // DownloadsProvider
+            else if (isDownloadsDocument(uri)) {
+
+                final String id = DocumentsContract.getDocumentId(uri);
+                final Uri contentUri = ContentUris.withAppendedId(
+                        Uri.parse("content://downloads/public_downloads"), Long.valueOf(id));
+
+                return getDataColumn(context, contentUri, null, null);
+            }
+            // MediaProvider
+            else if (isMediaDocument(uri)) {
+                final String docId = DocumentsContract.getDocumentId(uri);
+                final String[] split = docId.split(":");
+                final String type = split[0];
+
+                Uri contentUri = null;
+                if ("image".equals(type)) {
+                    contentUri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
+                } else if ("video".equals(type)) {
+                    contentUri = MediaStore.Video.Media.EXTERNAL_CONTENT_URI;
+                } else if ("audio".equals(type)) {
+                    contentUri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
+                }
+
+                final String selection = "_id=?";
+                final String[] selectionArgs = new String[] {
+                        split[1]
+                };
+
+                return getDataColumn(context, contentUri, selection, selectionArgs);
+            }
+        }
+        // MediaStore (and general)
+        else if ("content".equalsIgnoreCase(uri.getScheme())) {
+            return getDataColumn(context, uri, null, null);
+        }
+        // File
+        else if ("file".equalsIgnoreCase(uri.getScheme())) {
+            return uri.getPath();
+        }
+
+        return null;
+    }
+
+    public static String getDataColumn(Context context, Uri uri, String selection,
+                                       String[] selectionArgs) {
+
+        Cursor cursor = null;
+        final String column = "_data";
+        final String[] projection = {
+                column
+        };
+
+        try {
+            cursor = context.getContentResolver().query(uri, projection, selection, selectionArgs,
+                    null);
+            if (cursor != null && cursor.moveToFirst()) {
+                final int column_index = cursor.getColumnIndexOrThrow(column);
+                return cursor.getString(column_index);
+            }
+        } finally {
+            if (cursor != null)
+                cursor.close();
+        }
+        return null;
+    }
+
+    public static boolean isExternalStorageDocument(Uri uri) {
+        return "com.android.externalstorage.documents".equals(uri.getAuthority());
+    }
+
+    public static boolean isDownloadsDocument(Uri uri) {
+        return "com.android.providers.downloads.documents".equals(uri.getAuthority());
+    }
+
+    public static boolean isMediaDocument(Uri uri) {
+        return "com.android.providers.media.documents".equals(uri.getAuthority());
     }
 
     private void get_all_cities(){
@@ -124,8 +294,7 @@ public class AddProduct extends AppCompatActivity implements
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-                // Run view-related code back on the main thread.
-                // Here we display the response message in our text view
+
             }
     });
     }
@@ -192,6 +361,7 @@ public class AddProduct extends AppCompatActivity implements
             }
         });
     }
+
     public void submitbuttonHandler(View view) {
         //Decide what happens when the user clicks the submit button
         String name = nameEditText.getText().toString();
@@ -200,6 +370,13 @@ public class AddProduct extends AppCompatActivity implements
         Bundle bundle = getIntent().getExtras();
         String donor_phone = bundle.getString("phone");
         donor_email = bundle.getString("email");
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inPreferredConfig = Bitmap.Config.RGB_565;
+        // Read BitMap by file path
+        Bitmap bitmap = BitmapFactory.decodeFile(selectedImagePath, options);
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
+        byte[] byteArray = stream.toByteArray();
 
         JSONObject obj = new JSONObject();
         try {
@@ -209,7 +386,7 @@ public class AddProduct extends AppCompatActivity implements
             obj.put("rating", chosen_rating);
             obj.put("city", chosen_city);
             obj.put("phone", donor_phone);
-            //obj.put("img_url", ?);
+            obj.put("img_url", byteArray);
 
             String wrap = "/add_product";
             SendRequest(wrap,obj.toString());
