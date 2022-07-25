@@ -25,7 +25,7 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 
 public class HomePage extends AppCompatActivity {
-    private String url ="http://10.100.102.195:3000";
+    private String url ="http://192.168.14.22:3000";
     public static final MediaType JSON = MediaType.get("application/json; charset=utf-8");
     private String user_phone;
     private Button add_product_button;
@@ -87,7 +87,7 @@ public class HomePage extends AppCompatActivity {
         finish();
         Bundle bundle = getIntent().getExtras();
         String user_email = bundle.getString("email");
-        Intent intent = new Intent(HomePage.this,AddProduct.class);
+        Intent intent = new Intent(HomePage.this,AddImageActivity.class);
         intent.putExtra("phone", user_phone);
         intent.putExtra("email", user_email);
         startActivity(intent);

@@ -47,29 +47,29 @@ import okhttp3.Response;
 public class AddProduct extends AppCompatActivity implements
         AdapterView.OnItemSelectedListener {
     public static final MediaType JSON = MediaType.get("application/json; charset=utf-8");
-        EditText nameEditText;
-        EditText descriptionEditText;
-        int chosen_rating, chosen_category;
-        String chosen_city;
-        Bitmap chosen_img;
-        String donor_email;
+    EditText nameEditText;
+    EditText descriptionEditText;
+    int chosen_rating, chosen_category;
+    String chosen_city;
+    Bitmap chosen_img;
+    String donor_email;
 
 
-        ArrayList<String> array_cities;
-        Spinner city_spin;
-        String[] rating = { "very poor", "poor", "fair", "good", "very good"};
-        Spinner rating_spin;
-        String[] category = { "appliances", "clothing", "furniture", "plants and animals", "various"};
-        String[] new_cities;
-        Spinner category_spin;
-        private String url="http://10.100.102.195:3000";//****Put your  URL here******
+    ArrayList<String> array_cities;
+    Spinner city_spin;
+    String[] rating = { "very poor", "poor", "fair", "good", "very good"};
+    Spinner rating_spin;
+    String[] category = { "appliances", "clothing", "furniture", "plants and animals", "various"};
+    String[] new_cities;
+    Spinner category_spin;
+    private String url="http://192.168.14.22:3000";//****Put your  URL here******
     // One Button
-        Button BSelectImage;
+    Button BSelectImage;
 
     // One Preview Image
-        ImageView IVPreviewImage;
+    ImageView IVPreviewImage;
 
-        String selectedImagePath;
+    String selectedImagePath;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -105,7 +105,7 @@ public class AddProduct extends AppCompatActivity implements
         ArrayAdapter rating_adapter = new ArrayAdapter(this,android.R.layout.simple_spinner_item,rating);
         city_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         //Setting the ArrayAdapter data on the Spinner
-            rating_spin.setAdapter(rating_adapter);
+        rating_spin.setAdapter(rating_adapter);
 
         category_spin = (Spinner) findViewById(R.id.category_spinner);
         category_spin.setOnItemSelectedListener(this);
@@ -114,6 +114,8 @@ public class AddProduct extends AppCompatActivity implements
         category_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         //Setting the ArrayAdapter data on the Spinner
         category_spin.setAdapter(category_adapter);
+
+
 
 
         ActivityResultLauncher<Intent> launchSomeActivity
@@ -131,19 +133,19 @@ public class AddProduct extends AppCompatActivity implements
                             selectedImagePath = getPath(getApplicationContext(), uri);
                             EditText imgPath = findViewById(R.id.imgPath);
                             imgPath.setText(selectedImagePath);
-//                            Bitmap selectedImageBitmap = null;
-//                            try {
-//                                selectedImageBitmap
-//                                        = MediaStore.Images.Media.getBitmap(
-//                                        this.getContentResolver(),
-//                                        selectedImageUri);
-//                            }
-//                            catch (IOException e) {
-//                                e.printStackTrace();
-//                            }
-//                            chosen_img = selectedImageBitmap;
-//                            IVPreviewImage.setImageBitmap(
-//                                    selectedImageBitmap);
+                            Bitmap selectedImageBitmap = null;
+                            try {
+                                selectedImageBitmap
+                                        = MediaStore.Images.Media.getBitmap(
+                                        this.getContentResolver(),
+                                        uri);
+                            }
+                            catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                            chosen_img = selectedImageBitmap;
+                            IVPreviewImage.setImageBitmap(
+                                    chosen_img);
                         }
                     }
                 });
@@ -152,12 +154,12 @@ public class AddProduct extends AppCompatActivity implements
             @Override
             public void onClick(View v) {
                 Intent i = new Intent();
-                i.setType("*/*");
+                i.setType("image/*");
                 i.setAction(Intent.ACTION_GET_CONTENT);
 
                 launchSomeActivity.launch(i);
             }
-    });
+        });
     }
 
     // Implementation of the getPath() method and all its requirements is taken from the StackOverflow Paul Burke's answer: https://stackoverflow.com/a/20559175/5426539
@@ -288,15 +290,15 @@ public class AddProduct extends AppCompatActivity implements
                 try {
                     JSONArray arr =(JSONArray) Jobject.get("cities");
                     ArrayList<String> array2 = new ArrayList<String>();
-                        for (int i = 0; i < arr.length(); i++) {
-                            array_cities.add(arr.get(i).toString());
-                        }
+                    for (int i = 0; i < arr.length(); i++) {
+                        array_cities.add(arr.get(i).toString());
+                    }
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
 
             }
-    });
+        });
     }
 
 
@@ -375,7 +377,7 @@ public class AddProduct extends AppCompatActivity implements
         options.inPreferredConfig = Bitmap.Config.RGB_565;
         // Read BitMap by file path
         Bitmap bitmap = BitmapFactory.decodeFile(selectedImagePath, options);
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
+        bitmap.compress(Bitmap.CompressFormat.PNG, 70, stream);
         byte[] byteArray = stream.toByteArray();
 
         JSONObject obj = new JSONObject();

@@ -16,8 +16,8 @@
         tools:layout_editor_absoluteY="90dp"
         android:textColor="#3366cc"
         android:textSize="34dp"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.436"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
