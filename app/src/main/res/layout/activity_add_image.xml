@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
-
+    tools:context=".AddImageActivity">
     <!--    <EditText-->
     <!--        android:layout_width="match_parent"-->
     <!--        android:layout_height="wrap_content"-->
@@ -14,87 +15,85 @@
         android:id="@+id/add_image"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Select Image(s)"
-        android:textStyle="bold"/>
+        android:layout_marginTop="76dp"
+        android:text="Select Image"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
+        android:id="@+id/numSelectedImages"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="168dp"
         android:text="No Image Selected."
-        android:id="@+id/numSelectedImages"
         android:textAlignment="center"
+        android:textColor="#988734"
         android:textStyle="bold"
-        android:textColor="#988734"/>
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
-        <TextView
-            android:layout_weight="1"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:text="IPv4 Address"
-            android:textStyle="bold"
-            android:textColor="#988734" />
-        <EditText
-            android:layout_weight="4"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:id="@+id/IPAddress"
-            android:text="192.168.43.177"
-            android:singleLine="true"
-            android:textStyle="bold"/>
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.138"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
-        <TextView
-            android:layout_weight="1"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:text="Port Number"
-            android:textStyle="bold"
-            android:textColor="#988734"/>
-        <EditText
-            android:layout_weight="4"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:id="@+id/portNumber"
-            android:text="5000"
-            android:inputType="number"
-            android:singleLine="true"
-            android:textStyle="bold"/>
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.138"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
     </LinearLayout>
 
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="220dp"
         android:onClick="connectServer"
-        android:text="Connect to Server &amp; Upload"
+        android:text="Upload"
         android:textColor="#6CA22F"
-        android:textStyle="bold" />
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+         />
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Connection Status."
-        android:id="@+id/responseText"
-        android:textAlignment="center"
-        android:textColor="#FF0000"
-        android:textStyle="bold"/>
+    <Button
+        android:id="@+id/skip_button"
+        android:layout_width="413dp"
+        android:layout_height="49dp"
+        android:layout_marginTop="296dp"
+        android:onClick="navigateToHomepage"
+        android:text="I'll upload later :)"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="\n\nAbout Us\nRights reserved by Ahmed Fawzy Gad 2019 (https://www.linkedin.com/in/ahmedfgad).\n\n
-The GitHub project is available here:\nhttps://github.com/ahmedfgad/AndroidFlask\n\n
-The project is documented in a tutorial at HeartBeat:\nhttps://heartbeat.fritz.ai/uploading-images-from-android-to-a-python-based-flask-server-691e4092a95e"
-        android:autoLink="web"
-        android:textAlignment="center"
-        android:textColor="#988734"
-        android:textStyle="bold"/>
+    <!--    <TextView-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:text="Connection Status."-->
+<!--        android:id="@+id/responseText"-->
+<!--        android:textAlignment="center"-->
+<!--        android:textColor="#FF0000"-->
+<!--        android:textStyle="bold"/>-->
 
-</LinearLayout>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

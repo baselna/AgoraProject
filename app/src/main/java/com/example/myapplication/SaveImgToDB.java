@@ -6,9 +6,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.ListView;
 import android.widget.Toast;
 
 import org.json.JSONException;
@@ -24,13 +21,20 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
-public class HomePage extends AppCompatActivity {
-    private String url ="http://10.100.102.195:3000";
-    public static final MediaType JSON = MediaType.get("application/json; charset=utf-8");
-    private String user_phone;
-    private Button add_product_button;
+public class SaveImgToDB extends AppCompatActivity {
 
-    void get_user_info_request(String url, String json) {
+    private String url ="http://10.100.102.195:3000";
+    static String email;
+    public static final MediaType JSON = MediaType.get("application/json; charset=utf-8");
+
+    public void navigateToHomepage(){
+        finish();
+        Intent intent = new Intent(SaveImgToDB.this,HomePage.class);
+        intent.putExtra("email", email);
+        startActivity(intent);
+    }
+
+    void save_img_to_db_request(String url, String json) {
         String new_url = this.url + url;
         OkHttpClient client = new OkHttpClient();
         RequestBody body = RequestBody.create(json, JSON);
@@ -51,11 +55,15 @@ public class HomePage extends AppCompatActivity {
                 JSONObject Jobject = null;
                 try {
                     Jobject = new JSONObject(responseData);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-                try {
-                    user_phone = Jobject.get("phone").toString();
+                    if(Jobject.length() == 0){
+//                        Toast.makeText(getApplicationContext(), "Failed to upload photo, please try again later.", Toast.LENGTH_LONG).show();
+                    }
+                    else{
+//                        Toast.makeText(getApplicationContext(), "Photo uploaded successfully", Toast.LENGTH_LONG).show();
+
+                    }
+                    navigateToHomepage();
+
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -67,45 +75,20 @@ public class HomePage extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_home_page);
+        setContentView(R.layout.activity_save_img_to_db);
         Bundle bundle = getIntent().getExtras();
-        String user_email = bundle.getString("email");
+        String img_url = bundle.getString("img_url");
+        int product_id = bundle.getInt("product_id");
+        email = bundle.getString("email");
         JSONObject obj = new JSONObject();
         try {
-            obj.put("email", user_email);
-            String wrap = "/get_user_by_email";
-            get_user_info_request(wrap,obj.toString());
+            obj.put("img_url", img_url);
+            obj.put("product_id", product_id);
+            String wrap = "/add_photo";
+            save_img_to_db_request(wrap,obj.toString());
 
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        add_product_button = (Button) findViewById(R.id.add_product);
-
     }
-
-    public void addprudoctbuttonHandler(View view) {
-        finish();
-        Bundle bundle = getIntent().getExtras();
-        String user_email = bundle.getString("email");
-        Intent intent = new Intent(HomePage.this,AddProduct.class);
-        intent.putExtra("phone", user_phone);
-        intent.putExtra("email", user_email);
-        startActivity(intent);
-    }
-
-//    public void mostviewedbuttonHandler(View view) {
-//        //Decide what happens when the user clicks the submit button
-//        JSONObject obj = new JSONObject();
-//        try {
-//            obj.put("email", email);
-//            obj.put("phone", phoneNum);
-//            obj.put("name", fullName);
-//            String wrap = "/signup";
-//            MainActivity.getInstance().SendRequest2(wrap, obj.toString());
-//
-//        } catch (JSONException e) {
-//            e.printStackTrace();
-//        }
-//    }
-
 }

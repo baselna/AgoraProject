@@ -34,6 +34,9 @@ import android.widget.Toast;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.common.SignInButton;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -59,13 +62,17 @@ public class AddImageActivity extends AppCompatActivity {
             Manifest.permission.READ_EXTERNAL_STORAGE
     };
 
-    private static final Pattern IP_ADDRESS
-            = Pattern.compile(
-            "((25[0-5]|2[0-4][0-9]|[0-1][0-9]{2}|[1-9][0-9]|[1-9])\\.(25[0-5]|2[0-4]"
-                    + "[0-9]|[0-1][0-9]{2}|[1-9][0-9]|[1-9]|0)\\.(25[0-5]|2[0-4][0-9]|[0-1]"
-                    + "[0-9]{2}|[1-9][0-9]|[1-9]|0)\\.(25[0-5]|2[0-4][0-9]|[0-1][0-9]{2}"
-                    + "|[1-9][0-9]|[0-9]))");
-    final int SELECT_MULTIPLE_IMAGES = 1;
+
+    void navigateToSaveImgToDBActivity(String img_url, int id){
+        finish();
+        Intent intent = new Intent(AddImageActivity.this,SaveImgToDB.class);
+        intent.putExtra("email", email);
+        intent.putExtra("img_url", img_url);
+        intent.putExtra("product_id", id);
+        startActivity(intent);
+    }
+
+    final int SELECT_MULTIPLE_IMAGES = 0;
     String image_path;
     ArrayList<String> selectedImagesPaths; // Paths of the image(s) selected by the user.
     boolean imagesSelected = false; // Whether the user selected at least an image or not.
@@ -76,7 +83,8 @@ public class AddImageActivity extends AppCompatActivity {
     private static String TAG = "FileUtils";
 
     private static Uri contentUri = null;
-
+    static  int product_id;
+    static String email;
     Context context;
 
     @Override
@@ -85,7 +93,9 @@ public class AddImageActivity extends AppCompatActivity {
         //requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
         //requestPermissions(new String[]{Manifest.permission.INTERNET}, 2);
         ActivityCompat.requestPermissions(AddImageActivity.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
-
+        Bundle bundle = getIntent().getExtras();
+        email = bundle.getString("email");
+        product_id = bundle.getInt("product_id");
 
         setContentView(R.layout.activity_add_image);
         context =  getApplicationContext();
@@ -169,27 +179,20 @@ public class AddImageActivity extends AppCompatActivity {
             }
         }
     }
+    public void navigateToHomepage(View v){
+        finish();
+        Intent intent = new Intent(AddImageActivity.this,HomePage.class);
+        intent.putExtra("email", email);
+        startActivity(intent);
+    }
 
     public void connectServer(View v) {
-        TextView responseText = findViewById(R.id.responseText);
         if (imagesSelected == false) { // This means no image is selected and thus nothing to upload.
-            responseText.setText("No Image Selected to Upload. Select Image(s) and Try Again.");
-            return;
-        }
-        responseText.setText("Sending the Files. Please Wait ...");
-
-        EditText ipv4AddressView = findViewById(R.id.IPAddress);
-        String ipv4Address = ipv4AddressView.getText().toString();
-        EditText portNumberView = findViewById(R.id.portNumber);
-        String portNumber = portNumberView.getText().toString();
-
-        Matcher matcher = IP_ADDRESS.matcher(ipv4Address);
-        if (!matcher.matches()) {
-            responseText.setText("Invalid IPv4 Address. Please Check Your Inputs.");
+            Toast.makeText(getApplicationContext(), "No Image Selected to Upload. Select Image and Try Again.", Toast.LENGTH_LONG).show();
             return;
         }
 
-        String postUrl = "http://" + ipv4Address + ":" + portNumber + "/add_image";
+        String postUrl = "http://10.100.102.195:3000/add_image";
 
         MultipartBody.Builder multipartBodyBuilder = new MultipartBody.Builder().setType(MultipartBody.FORM);
 
@@ -203,28 +206,25 @@ public class AddImageActivity extends AppCompatActivity {
                 Bitmap bitmap = BitmapFactory.decodeFile(image_path, options);
                 bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
             }catch(Exception e){
-                responseText.setText("Please Make Sure the Selected File is an Image.");
+                Toast.makeText(getApplicationContext(), "Please Make Sure the Selected File is an Image.", Toast.LENGTH_SHORT).show();
                 return;
             }
             byte[] byteArray = stream.toByteArray();
 
             multipartBodyBuilder.addFormDataPart("image" + i, "Android_Flask_" + i + ".jpg", RequestBody.create(byteArray));
         }
-
         RequestBody postBodyImage = multipartBodyBuilder.build();
 
 //        RequestBody postBodyImage = new MultipartBody.Builder()
 //                .setType(MultipartBody.FORM)
 //                .addFormDataPart("image", "androidFlask.jpg", RequestBody.create(MediaType.parse("image/*jpg"), byteArray))
 //                .build();
-
         postRequest(postUrl, postBodyImage);
     }
 
     void postRequest(String postUrl, RequestBody postBody) {
 
         OkHttpClient client = new OkHttpClient();
-
         Request request = new Request.Builder()
                 .url(postUrl)
                 .post(postBody)
@@ -241,8 +241,7 @@ public class AddImageActivity extends AppCompatActivity {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        TextView responseText = findViewById(R.id.responseText);
-                        responseText.setText("Failed to Connect to Server. Please Try Again.");
+                        Toast.makeText(getApplicationContext(), "Failed to upload, please try again", Toast.LENGTH_SHORT).show();
                     }
                 });
             }
@@ -253,9 +252,22 @@ public class AddImageActivity extends AppCompatActivity {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        TextView responseText = findViewById(R.id.responseText);
                         try {
-                            responseText.setText("Server's Response\n" + response.body().string());
+                            Toast.makeText(getApplicationContext(), "uploaded successfully", Toast.LENGTH_SHORT).show();
+                            String responseData =  response.body().string();
+                            JSONObject Jobject = null;
+                            try {
+                                Jobject = new JSONObject(responseData);
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                            try {
+                                String img_url = Jobject.get("img_url").toString();
+                                navigateToSaveImgToDBActivity(img_url, product_id);
+
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
