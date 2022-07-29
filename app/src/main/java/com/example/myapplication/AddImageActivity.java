@@ -117,10 +117,9 @@ public class AddImageActivity extends AppCompatActivity {
                             selectedImagesPaths.add(currentImagePath);
                             image_path = currentImagePath;
                             imagesSelected = true;
-                            numSelectedImages.setText("Number of Selected Images : " + selectedImagesPaths.size());
+                            numSelectedImages.setText("Image selected successfully");
                         } else {
                             // When multiple images are selected.
-                            // Thanks tp Laith Mihyar for this Stackoverflow answer : https://stackoverflow.com/a/34047251/5426539
                             if (result.getData().getClipData() != null) {
                                 ClipData clipData = result.getData().getClipData();
                                 for (int i = 0; i < clipData.getItemCount(); i++) {
@@ -133,7 +132,7 @@ public class AddImageActivity extends AppCompatActivity {
                                     Log.d("ImageDetails", "Image URI " + i + " = " + uri);
                                     Log.d("ImageDetails", "Image Path " + i + " = " + currentImagePath);
                                     imagesSelected = true;
-                                    numSelectedImages.setText("Number of Selected Images : " + selectedImagesPaths.size());
+                                    numSelectedImages.setText("Image selected successfully");
                                 }
                             }
                         }
@@ -295,7 +294,7 @@ public class AddImageActivity extends AppCompatActivity {
                             Log.d("ImageDetails", "Single Image Path : " + currentImagePath);
                             selectedImagesPaths.add(currentImagePath);
                             imagesSelected = true;
-                            numSelectedImages.setText("Number of Selected Images : " + selectedImagesPaths.size());
+                            numSelectedImages.setText("Image selected successfully");
                         } else {
                             // When multiple images are selected.
                             // Thanks tp Laith Mihyar for this Stackoverflow answer : https://stackoverflow.com/a/34047251/5426539
@@ -311,7 +310,7 @@ public class AddImageActivity extends AppCompatActivity {
                                     Log.d("ImageDetails", "Image URI " + i + " = " + uri);
                                     Log.d("ImageDetails", "Image Path " + i + " = " + currentImagePath);
                                     imagesSelected = true;
-                                    numSelectedImages.setText("Number of Selected Images : " + selectedImagesPaths.size());
+                                    numSelectedImages.setText("Image selected successfully");
                                 }
                             }
                         }
@@ -397,7 +396,6 @@ public class AddImageActivity extends AppCompatActivity {
 
                                 return getDataColumn(context, contentUri, null, null);
                             } catch (NumberFormatException e) {
-                                //In Android 8 and Android P the id is not a number
                                 return uri.getPath().replaceFirst("^/document/raw:", "").replaceFirst("^raw:", "");
                             }
                         }
@@ -523,11 +521,6 @@ public class AddImageActivity extends AppCompatActivity {
 
         Log.d(TAG, "MEDIA EXTSD TYPE: " + type);
         Log.d(TAG, "Relative path: " + relativePath);
-        // on my Sony devices (4.4.4 & 5.1.1), `type` is a dynamic string
-        // something like "71F8-2C0A", some kind of unique id per storage
-        // don't know any API that can get the root path of that storage based on its id.
-        //
-        // so no "primary" type, but let the check here for other devices
         if ("primary".equalsIgnoreCase(type)) {
             fullPath = Environment.getExternalStorageDirectory() + relativePath;
             if (fileExists(fullPath)) {
@@ -712,148 +705,3 @@ public class AddImageActivity extends AppCompatActivity {
     }
 }
 
-//    @Override
-//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-//        try {
-//            if (requestCode == SELECT_MULTIPLE_IMAGES && resultCode == RESULT_OK && null != data) {
-//                // When a single image is selected.
-//                String currentImagePath;
-//                selectedImagesPaths = new ArrayList<>();
-//                TextView numSelectedImages = findViewById(R.id.numSelectedImages);
-//                if (data.getData() != null) {
-//                    Uri uri = data.getData();
-//                    currentImagePath = getPath(getApplicationContext(), uri);
-//                    Log.d("ImageDetails", "Single Image URI : " + uri);
-//                    Log.d("ImageDetails", "Single Image Path : " + currentImagePath);
-//                    selectedImagesPaths.add(currentImagePath);
-//                    imagesSelected = true;
-//                    numSelectedImages.setText("Number of Selected Images : " + selectedImagesPaths.size());
-//                } else {
-//                    // When multiple images are selected.
-//                    // Thanks tp Laith Mihyar for this Stackoverflow answer : https://stackoverflow.com/a/34047251/5426539
-//                    if (data.getClipData() != null) {
-//                        ClipData clipData = data.getClipData();
-//                        for (int i = 0; i < clipData.getItemCount(); i++) {
-//
-//                            ClipData.Item item = clipData.getItemAt(i);
-//                            Uri uri = item.getUri();
-//
-//                            currentImagePath = getPath(getApplicationContext(), uri);
-//                            selectedImagesPaths.add(currentImagePath);
-//                            Log.d("ImageDetails", "Image URI " + i + " = " + uri);
-//                            Log.d("ImageDetails", "Image Path " + i + " = " + currentImagePath);
-//                            imagesSelected = true;
-//                            numSelectedImages.setText("Number of Selected Images : " + selectedImagesPaths.size());
-//                        }
-//                    }
-//                }
-//            } else {
-//                Toast.makeText(this, "You haven't Picked any Image.", Toast.LENGTH_LONG).show();
-//            }
-//            Toast.makeText(getApplicationContext(), selectedImagesPaths.size() + " Image(s) Selected.", Toast.LENGTH_LONG).show();
-//        } catch (Exception e) {
-//            Toast.makeText(this, "Something Went Wrong.", Toast.LENGTH_LONG).show();
-//            e.printStackTrace();
-//        }
-//
-//        super.onActivityResult(requestCode, resultCode, data);
-//    }
-
-//    // Implementation of the getPath() method and all its requirements is taken from the StackOverflow Paul Burke's answer: https://stackoverflow.com/a/20559175/5426539
-//    public static String getPath(final Context context, final Uri uri) {
-//
-//        final boolean isKitKat = Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT;
-//
-//        // DocumentProvider
-//        if (isKitKat && DocumentsContract.isDocumentUri(context, uri)) {
-//            // ExternalStorageProvider
-//            if (isExternalStorageDocument(uri)) {
-//                final String docId = DocumentsContract.getDocumentId(uri);
-//                final String[] split = docId.split(":");
-//                final String type = split[0];
-//
-//                if ("primary".equalsIgnoreCase(type)) {
-//                    return Environment.getExternalStorageDirectory() + "/" + split[1];
-//                }
-//
-//                // TODO handle non-primary volumes
-//            }
-//            // DownloadsProvider
-//            else if (isDownloadsDocument(uri)) {
-//
-//                final String id = DocumentsContract.getDocumentId(uri);
-//                final Uri contentUri = ContentUris.withAppendedId(
-//                        Uri.parse("content://downloads/public_downloads"), Long.valueOf(id));
-//
-//                return getDataColumn(context, contentUri, null, null);
-//            }
-//            // MediaProvider
-//            else if (isMediaDocument(uri)) {
-//                final String docId = DocumentsContract.getDocumentId(uri);
-//                final String[] split = docId.split(":");
-//                final String type = split[0];
-//
-//                Uri contentUri = null;
-//                if ("image".equals(type)) {
-//                    contentUri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
-//                } else if ("video".equals(type)) {
-//                    contentUri = MediaStore.Video.Media.EXTERNAL_CONTENT_URI;
-//                } else if ("audio".equals(type)) {
-//                    contentUri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
-//                }
-//
-//                final String selection = "_id=?";
-//                final String[] selectionArgs = new String[]{
-//                        split[1]
-//                };
-//
-//                return getDataColumn(context, contentUri, selection, selectionArgs);
-//            }
-//        }
-//        // MediaStore (and general)
-//        else if ("content".equalsIgnoreCase(uri.getScheme())) {
-//            return getDataColumn(context, uri, null, null);
-//        }
-//        // File
-//        else if ("file".equalsIgnoreCase(uri.getScheme())) {
-//            return uri.getPath();
-//        }
-//
-//        return null;
-//    }
-//
-//    public static String getDataColumn(Context context, Uri uri, String selection,
-//                                       String[] selectionArgs) {
-//
-//        Cursor cursor = null;
-//        final String column = "_data";
-//        final String[] projection = {
-//                column
-//        };
-//
-//        try {
-//            cursor = context.getContentResolver().query(uri, projection, selection, selectionArgs,
-//                    null);
-//            if (cursor != null && cursor.moveToFirst()) {
-//                final int index = cursor.getColumnIndexOrThrow(column);
-//                return cursor.getString(index);
-//            }
-//        } finally {
-//            if (cursor != null)
-//                cursor.close();
-//        }
-//        return null;
-//    }
-//
-//    public static boolean isExternalStorageDocument(Uri uri) {
-//        return "com.android.externalstorage.documents".equals(uri.getAuthority());
-//    }
-//
-//    public static boolean isDownloadsDocument(Uri uri) {
-//        return "com.android.providers.downloads.documents".equals(uri.getAuthority());
-//    }
-//
-//    public static boolean isMediaDocument(Uri uri) {
-//        return "com.android.providers.media.documents".equals(uri.getAuthority());
-//    }
-//}

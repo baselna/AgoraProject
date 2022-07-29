@@ -34,6 +34,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CountDownLatch;
 
 
 import okhttp3.Call;
@@ -71,14 +72,45 @@ public class AddProduct extends AppCompatActivity implements
         descriptionEditText = (EditText) findViewById(R.id.description);
 
         array_cities = new ArrayList<String>();
-        get_all_cities();
+
+        //option 1
+       /* final CountDownLatch latch = new CountDownLatch(1);
+        new Thread(() -> {
+            //4
+            //do your logic here in thread#2
+            get_all_cities();
+            //then release the lock
+            //5
+            latch.countDown();
+        }).start();
+
         try {
-            Thread.sleep(3000);
+            //3 this method will block the thread of latch untill its released later from thread#2
+            latch.await();
+        } catch (InterruptedException e) {
+            new_cities = array_cities.toArray(new String[0]);
+            e.printStackTrace();
+        }
+        // You reach here after  latch.countDown() is called from thread#2
+        new_cities = array_cities.toArray(new String[0]); */ // @option1 ended
+
+//        while(array_cities.isEmpty()) {
+//                get_all_cities();
+//            }
+        try {
+            //Thread threadA1 = new Thread(this::get_all_cities, "A");
+            //threadA1.start();
+            while(array_cities.isEmpty()) {
+                get_all_cities();
+                Thread.sleep(1000);
+            }
+            //threadA1.interrupt();
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        new_cities = array_cities.toArray(new String[0]);
 
+        new_cities = array_cities.toArray(new String[0]);
+        //setContentView(R.layout.activity_add_product);setContentView(R.layout.activity_add_product);
 
         city_spin = (Spinner) findViewById(R.id.spinner);
         city_spin.setOnItemSelectedListener(this);
@@ -207,7 +239,10 @@ public class AddProduct extends AppCompatActivity implements
 
             @Override
             public void onResponse(Call call, final Response response) throws IOException {
+                //System.out.print(response.body().contentLength());
+
                 final String responseData = response.body().string();
+
                 JSONObject Jobject = null;
                 try {
                     Jobject = new JSONObject(responseData);
