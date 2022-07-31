@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -10,7 +10,7 @@
         android:id="@+id/add_product"
         android:layout_width="182dp"
         android:layout_height="53dp"
-        android:layout_marginTop="124dp"
+        android:layout_marginTop="96dp"
         android:onClick="addprudoctbuttonHandler"
         android:text="Add Product"
         app:layout_constraintEnd_toEndOf="parent"
@@ -21,15 +21,15 @@
 
     <TextView
         android:id="@+id/all_products"
-        android:layout_width="432dp"
-        android:layout_height="64dp"
-        android:layout_marginTop="60dp"
+        android:layout_width="415dp"
+        android:layout_height="71dp"
+        android:layout_marginTop="16dp"
         android:gravity="center_horizontal"
         android:text="All Available Products"
         android:textColor="#3366cc"
         android:textSize="40dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.471"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -37,7 +37,7 @@
         android:id="@+id/filter"
         android:layout_width="218dp"
         android:layout_height="48dp"
-        android:layout_marginTop="176dp"
+        android:layout_marginTop="148dp"
         android:text="Filter Products"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -48,11 +48,21 @@
         android:id="@+id/top_products"
         android:layout_width="362dp"
         android:layout_height="49dp"
-        android:layout_marginTop="224dp"
+        android:layout_marginTop="196dp"
         android:text="Most Viewed Products"
+        android:onClick="mostviewedbuttonHandler"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <ListView
+        android:id="@+id/listView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="252dp" />
+
+</RelativeLayout>

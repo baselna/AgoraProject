@@ -7,10 +7,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -28,51 +25,16 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
-public class HomePage extends AppCompatActivity {
+public class MostViewedProducts extends AppCompatActivity {
+
+    ArrayList<minimal_product> topProducts= new ArrayList<>();
+    private String user_email;
     private String url ="http://10.100.102.195:3000";
     public static final MediaType JSON = MediaType.get("application/json; charset=utf-8");
-    private String user_phone;
-    private String user_email;
-    private Button add_product_button;
-    ArrayList<minimal_product> productsList= new ArrayList<>();
-
-    void get_user_info_request(String url, String json) {
-        String new_url = this.url + url;
-        OkHttpClient client = new OkHttpClient();
-        RequestBody body = RequestBody.create(json, JSON);
-        Request request = new Request.Builder()
-                .url(new_url)
-                .post(body)
-                .build();
-
-        client.newCall(request).enqueue(new Callback() {
-            @Override
-            public void onFailure(@NonNull Call call, @NonNull IOException e) {
-                e.printStackTrace();
-            }
-
-            @Override
-            public void onResponse(Call call, final Response response) throws IOException {
-                final String responseData = response.body().string();
-                JSONObject Jobject = null;
-                try {
-                    Jobject = new JSONObject(responseData);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-                try {
-                    user_phone = Jobject.get("phone").toString();
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-
-            }
-        });
-    }
 
 
-     void get_all_products_request(){
-        String fullURL=url+"/"+"get_all_products";
+    void get_top_products_request(){
+        String fullURL=url+"/most_viewed_products";
         Request request;
 
         OkHttpClient client = new OkHttpClient();
@@ -99,13 +61,13 @@ public class HomePage extends AppCompatActivity {
                     e.printStackTrace();
                 }
                 try {
-                    JSONArray arr =(JSONArray) Jobject.get("products");
+                    JSONArray arr =(JSONArray) Jobject.get("most_viewed");
                     for (int i = 0; i < arr.length(); i++) {
                         JSONObject cur = (JSONObject) arr.get(i);
                         minimal_product tmp = new minimal_product(cur.getString("name"),
                                 cur.getString("city"), cur.getInt("rating"),
                                 cur.getInt("ID"));
-                        productsList.add(tmp);
+                        topProducts.add(tmp);
                     }
                     int y =0;
                 } catch (JSONException e) {
@@ -114,14 +76,6 @@ public class HomePage extends AppCompatActivity {
 
             }
         });
-    }
-
-    void navigateToProductActivity(int product_id){
-        finish();
-        Intent intent = new Intent(HomePage.this,Product.class);
-        intent.putExtra("email", user_email);
-        intent.putExtra("product_id", product_id);
-        startActivity(intent);
     }
 
     void inc_views_request(String url, String json) {
@@ -145,46 +99,34 @@ public class HomePage extends AppCompatActivity {
         });
     }
 
+    void navigateToProductActivity(int product_id){
+        finish();
+        Intent intent = new Intent(MostViewedProducts.this, Product.class);
+        intent.putExtra("email", user_email);
+        intent.putExtra("product_id", product_id);
+        startActivity(intent);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_home_page);
+        setContentView(R.layout.activity_most_viewed_products);
+
         Bundle bundle = getIntent().getExtras();
-        String user_email = bundle.getString("email");
-        JSONObject obj = new JSONObject();
-        this.user_email = user_email;
-        try {
-            obj.put("email", user_email);
-            String wrap = "/get_user_by_email";
-            get_user_info_request(wrap,obj.toString());
+        user_email = bundle.getString("email");
 
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        add_product_button = (Button) findViewById(R.id.add_product);
-
-        // creating the listview
         ListView mListView = (ListView) findViewById(R.id.listView);
-        //get_all_products_request();
 
         try {
-            while(productsList.size() == 0) {
-                get_all_products_request();
+            while (topProducts.size() == 0) {
+                get_top_products_request();
                 Thread.sleep(1000);
             }
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-//        minimal_product p1 = new minimal_product("x","haifa",1,1);
-//        minimal_product p2 = new minimal_product("y","haifa",1,2);
-//        minimal_product p3 = new minimal_product("z","haifa",1,3);
-//        productsList.add(p1);
-//
-//        productsList.add(p2);
-//        productsList.add(p3);
 
-
-        ProductsListAdapter adapter = new ProductsListAdapter(this, R.layout.adapter_view_layout, productsList);
+        ProductsListAdapter adapter = new ProductsListAdapter(this, R.layout.adapter_view_layout, topProducts);
         mListView.setAdapter(adapter);
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -202,27 +144,16 @@ public class HomePage extends AppCompatActivity {
 
                 inc_views_request("/inc_num_of_views", obj.toString());
                 navigateToProductActivity(adapter.getItem(position).getId());
-
             }
         });
-
     }
 
-    public void addprudoctbuttonHandler(View view) {
+    public void returnToHomepagebuttonHandler(View view) {
         finish();
-        Bundle bundle = getIntent().getExtras();
-        String user_email = bundle.getString("email");
-        Intent intent = new Intent(HomePage.this,AddProduct.class);
-        intent.putExtra("phone", user_phone);
+        Intent intent = new Intent(MostViewedProducts.this,HomePage.class);
         intent.putExtra("email", user_email);
         startActivity(intent);
     }
 
-    public void mostviewedbuttonHandler(View view) {
-        finish();
-        Intent intent = new Intent(HomePage.this,MostViewedProducts.class);
-        intent.putExtra("email", user_email);
-        startActivity(intent);
-    }
 
 }

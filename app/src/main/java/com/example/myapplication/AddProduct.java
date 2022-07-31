@@ -98,13 +98,10 @@ public class AddProduct extends AppCompatActivity implements
 //                get_all_cities();
 //            }
         try {
-            //Thread threadA1 = new Thread(this::get_all_cities, "A");
-            //threadA1.start();
             while(array_cities.isEmpty()) {
                 get_all_cities();
                 Thread.sleep(1000);
             }
-            //threadA1.interrupt();
         } catch (InterruptedException e) {
             e.printStackTrace();
         }

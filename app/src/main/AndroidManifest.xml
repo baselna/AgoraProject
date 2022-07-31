@@ -22,6 +22,12 @@
         android:theme="@style/Theme.MyApplication"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".MostViewedProducts"
+            android:exported="false" />
+        <activity
+            android:name=".Product"
+            android:exported="false" />
+        <activity
             android:name=".SaveImgToDB"
             android:exported="false" />
         <activity
