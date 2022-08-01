@@ -29,7 +29,7 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 
 public class HomePage extends AppCompatActivity {
-    private String url ="http://10.100.102.195:3000";
+    private String url ="http://192.168.1.172:3000";
     public static final MediaType JSON = MediaType.get("application/json; charset=utf-8");
     private String user_phone;
     private String user_email;

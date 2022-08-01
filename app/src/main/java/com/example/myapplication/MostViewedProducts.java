@@ -29,7 +29,7 @@ public class MostViewedProducts extends AppCompatActivity {
 
     ArrayList<minimal_product> topProducts= new ArrayList<>();
     private String user_email;
-    private String url ="http://10.100.102.195:3000";
+    private String url ="http://192.168.1.172:3000";
     public static final MediaType JSON = MediaType.get("application/json; charset=utf-8");
 
 

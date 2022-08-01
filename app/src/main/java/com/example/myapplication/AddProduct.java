@@ -62,7 +62,7 @@ public class AddProduct extends AppCompatActivity implements
     String[] category = { "appliances", "clothing", "furniture", "plants and animals", "various"};
     String[] new_cities;
     Spinner category_spin;
-    private String url="http://10.100.102.195:3000";//****Put your  URL here******
+    private String url="http://192.168.1.172:3000";//****Put your  URL here******
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

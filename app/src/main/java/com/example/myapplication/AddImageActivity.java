@@ -191,7 +191,7 @@ public class AddImageActivity extends AppCompatActivity {
             return;
         }
 
-        String postUrl = "http://10.100.102.195:3000/add_image";
+        String postUrl = "http://192.168.1.172:3000/add_image";
 
         MultipartBody.Builder multipartBodyBuilder = new MultipartBody.Builder().setType(MultipartBody.FORM);
 
