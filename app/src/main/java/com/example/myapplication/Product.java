@@ -4,18 +4,27 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.util.Base64;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -37,10 +46,10 @@ public class Product extends AppCompatActivity {
     private String region;
     private String phone_num;
     private String description;
-    // TODO: maybe need to change this to bytearray
-    private String image;
-
-    private String url ="http://192.168.1.172:3000";
+    private String has_img;
+    private String img_str;
+    private Bitmap img_decoded;
+    private String url ="http://132.69.208.167:3000";
     public static final MediaType JSON = MediaType.get("application/json; charset=utf-8");
 
 
@@ -76,16 +85,10 @@ public class Product extends AppCompatActivity {
                     region = Jobject.getString("region");
                     phone_num = Jobject.getString("phone");
                     description = Jobject.getString("description");
-                    image = Jobject.getString("image_url");
+                    has_img = Jobject.getString("has_image");
+                    img_str =Jobject.getString("image_url");
 
 
-                    if(image.equals("null")){
-                        ImageButton image_btn = (ImageButton) findViewById(R.id.imageButton);
-                        image_btn.setVisibility(View.INVISIBLE);
-                    }
-//                    else{
-//                        // handle image
-//                    }
                     String str_category = "", str_rating = "";
                     switch(category){
                         case 0:
@@ -138,6 +141,19 @@ public class Product extends AppCompatActivity {
                     phone_tv.setText(phone_num);
                     TextView desc_tv = (TextView) findViewById(R.id.description);
                     desc_tv.setText(description);
+                    ImageView image_view = (ImageView) findViewById(R.id.imageView);
+                    if(has_img.equals("no")){
+                        image_view.setVisibility(View.INVISIBLE);
+                    }
+                    else{
+                        try {
+                            byte [] encodeByte = Base64.decode(img_str, android.util.Base64.DEFAULT);
+                            img_decoded = BitmapFactory.decodeByteArray(encodeByte,0,encodeByte.length);
+                            image_view.setImageBitmap(img_decoded);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
 
 
 
@@ -258,7 +274,6 @@ public class Product extends AppCompatActivity {
             e.printStackTrace();
         }
         get_product_request(obj.toString());
-
 
         JSONObject obj2 = new JSONObject();
         try {

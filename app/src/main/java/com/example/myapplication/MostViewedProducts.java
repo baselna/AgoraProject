@@ -27,9 +27,9 @@ import okhttp3.Response;
 
 public class MostViewedProducts extends AppCompatActivity {
 
-    ArrayList<minimal_product> topProducts= new ArrayList<>();
+    ArrayList<minimal_product> topProducts;
     private String user_email;
-    private String url ="http://192.168.1.172:3000";
+    private String url ="http://132.69.208.167:3000";
     public static final MediaType JSON = MediaType.get("application/json; charset=utf-8");
 
 
@@ -112,6 +112,7 @@ public class MostViewedProducts extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_most_viewed_products);
 
+        topProducts= new ArrayList<>();
         Bundle bundle = getIntent().getExtras();
         user_email = bundle.getString("email");
 

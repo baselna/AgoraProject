@@ -52,7 +52,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
     private Button button_send_post;
     private Button button_send_get;
     private TextView textView_response;
-    private String url="http://192.168.1.172:3000";//****Put your  URL here******
+    private String url="http://132.69.208.167:3000";//****Put your  URL here******
     private String POST="POST";
     private String GET="GET";
     SignInButton signInButton;

@@ -4,13 +4,12 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -29,12 +28,13 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 
 public class HomePage extends AppCompatActivity {
-    private String url ="http://192.168.1.172:3000";
+    private String url ="http://132.69.208.167:3000";
     public static final MediaType JSON = MediaType.get("application/json; charset=utf-8");
     private String user_phone;
     private String user_email;
     private Button add_product_button;
-    ArrayList<minimal_product> productsList= new ArrayList<>();
+    ArrayList<minimal_product> productsList;
+
 
     void get_user_info_request(String url, String json) {
         String new_url = this.url + url;
@@ -71,7 +71,7 @@ public class HomePage extends AppCompatActivity {
     }
 
 
-     void get_all_products_request(){
+    void get_all_products_request(){
         String fullURL=url+"/"+"get_all_products";
         Request request;
 
@@ -145,11 +145,19 @@ public class HomePage extends AppCompatActivity {
         });
     }
 
+    class Multi extends Thread{
+        @Override
+        public void run() {
+            get_all_products_request();
+        }
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_page);
         Bundle bundle = getIntent().getExtras();
+        productsList= new ArrayList<>();
         String user_email = bundle.getString("email");
         JSONObject obj = new JSONObject();
         this.user_email = user_email;
@@ -166,15 +174,26 @@ public class HomePage extends AppCompatActivity {
         // creating the listview
         ListView mListView = (ListView) findViewById(R.id.listView);
         //get_all_products_request();
-
-        try {
-            while(productsList.size() == 0) {
+        while(productsList.size() == 0) {
+         //   Thread t2 = new Multi();
+          //  t2.start();
+//                t2.join();
+//                get_all_products_request();
+            //try {
+              //  t2.join();
+            try {
                 get_all_products_request();
                 Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        } //catch (InterruptedException e) {
+                //e.printStackTrace();
+            //}
+
+        //}
+
+
 //        minimal_product p1 = new minimal_product("x","haifa",1,1);
 //        minimal_product p2 = new minimal_product("y","haifa",1,2);
 //        minimal_product p3 = new minimal_product("z","haifa",1,3);
