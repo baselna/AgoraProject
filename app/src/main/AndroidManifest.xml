@@ -22,6 +22,12 @@
         android:theme="@style/Theme.MyApplication"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".FilteredProducts"
+            android:exported="false" />
+        <activity
+            android:name=".Filter"
+            android:exported="false" />
+        <activity
             android:name=".MostViewedProducts"
             android:exported="false" />
         <activity

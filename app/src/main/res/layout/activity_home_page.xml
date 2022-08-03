@@ -38,6 +38,7 @@
         android:layout_width="218dp"
         android:layout_height="48dp"
         android:layout_marginTop="148dp"
+        android:onClick="filterbuttonHandler"
         android:text="Filter Products"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"

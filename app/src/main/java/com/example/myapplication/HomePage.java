@@ -244,4 +244,12 @@ public class HomePage extends AppCompatActivity {
         startActivity(intent);
     }
 
+
+    public void filterbuttonHandler(View view) {
+        finish();
+        Intent intent = new Intent(HomePage.this,Filter.class);
+        intent.putExtra("email", user_email);
+        startActivity(intent);
+    }
+
 }
