@@ -25,7 +25,7 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 
 public class FilteredProducts extends AppCompatActivity {
-    private String url="http://132.69.208.167:3000";//****Put your  URL here******
+    private String url="http://10.0.2.2:3000";//****Put your  URL here******
     public static final MediaType JSON = MediaType.get("application/json; charset=utf-8");
 
     ArrayList<minimal_product> productsList;
@@ -85,6 +85,13 @@ public class FilteredProducts extends AppCompatActivity {
             }
         });
 
+    }
+
+    public void returnToHomepagebuttonHandler(View view) {
+        finish();
+        Intent intent = new Intent(FilteredProducts.this,HomePage.class);
+        intent.putExtra("email", user_email);
+        startActivity(intent);
     }
 
     void navigateToProductActivity(int product_id){

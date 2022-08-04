@@ -23,7 +23,7 @@ import okhttp3.Response;
 
 public class SaveImgToDB extends AppCompatActivity {
 
-    private String url ="http://132.69.208.167:3000";
+    private String url ="http://10.0.2.2:3000";
     static String email;
     public static final MediaType JSON = MediaType.get("application/json; charset=utf-8");
 

@@ -48,7 +48,7 @@ public class Filter extends AppCompatActivity implements
     String[] new_cities;
     String[] new_regions;
     Spinner category_spin;
-    private String url="http://132.69.208.167:3000";//****Put your  URL here******
+    private String url="http://10.0.2.2:3000";//****Put your  URL here******
 
 
     @Override
