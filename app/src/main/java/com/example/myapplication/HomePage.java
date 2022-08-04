@@ -34,6 +34,7 @@ public class HomePage extends AppCompatActivity {
     private String user_email;
     private Button add_product_button;
     ArrayList<minimal_product> productsList;
+    ArrayList<minimal_product> final_productList;
 
 
     void get_user_info_request(String url, String json) {
@@ -145,13 +146,6 @@ public class HomePage extends AppCompatActivity {
         });
     }
 
-    class Multi extends Thread{
-        @Override
-        public void run() {
-            get_all_products_request();
-        }
-    }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -175,23 +169,15 @@ public class HomePage extends AppCompatActivity {
         ListView mListView = (ListView) findViewById(R.id.listView);
         //get_all_products_request();
         while(productsList.size() == 0) {
-         //   Thread t2 = new Multi();
-          //  t2.start();
-//                t2.join();
-//                get_all_products_request();
-            //try {
-              //  t2.join();
+
             try {
                 get_all_products_request();
+                //mListView.requestLayout();
                 Thread.sleep(1000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-        } //catch (InterruptedException e) {
-                //e.printStackTrace();
-            //}
-
-        //}
+        }
 
 
 //        minimal_product p1 = new minimal_product("x","haifa",1,1);
@@ -202,14 +188,13 @@ public class HomePage extends AppCompatActivity {
 //        productsList.add(p2);
 //        productsList.add(p3);
 
-
-        ProductsListAdapter adapter = new ProductsListAdapter(this, R.layout.adapter_view_layout, productsList);
+        final_productList = new ArrayList<minimal_product>(productsList);
+        ProductsListAdapter adapter = new ProductsListAdapter(this, R.layout.adapter_view_layout, final_productList);
         mListView.setAdapter(adapter);
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                Toast.makeText(getApplicationContext(),"I will buy tesla "+ adapter.getItem(position).getId()
-//                        ,Toast.LENGTH_LONG).show();
+
                 JSONObject obj = new JSONObject();
                 try {
                     obj.put("email", user_email );

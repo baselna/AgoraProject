@@ -28,6 +28,7 @@ import okhttp3.Response;
 public class MostViewedProducts extends AppCompatActivity {
 
     ArrayList<minimal_product> topProducts;
+    ArrayList<minimal_product> final_topProducts;
     private String user_email;
     private String url ="http://10.0.2.2:3000";
     public static final MediaType JSON = MediaType.get("application/json; charset=utf-8");
@@ -127,7 +128,8 @@ public class MostViewedProducts extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        ProductsListAdapter adapter = new ProductsListAdapter(this, R.layout.adapter_view_layout, topProducts);
+        final_topProducts = new ArrayList<minimal_product>(topProducts);
+        ProductsListAdapter adapter = new ProductsListAdapter(this, R.layout.adapter_view_layout, final_topProducts);
         mListView.setAdapter(adapter);
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override

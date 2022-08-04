@@ -189,11 +189,11 @@
         android:id="@+id/button2"
         android:layout_width="209dp"
         android:layout_height="46dp"
-        android:layout_marginTop="640dp"
+        android:layout_marginTop="616dp"
         android:onClick="returnToHomepagebuttonHandler"
         android:text="back to homepage"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.891"
+        app:layout_constraintHorizontal_bias="0.91"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -201,7 +201,7 @@
         android:id="@+id/delete_button"
         android:layout_width="207dp"
         android:layout_height="44dp"
-        android:layout_marginTop="584dp"
+        android:layout_marginTop="552dp"
         android:onClick="deleteProductButtonHandler"
         android:text="delete product"
         app:layout_constraintEnd_toEndOf="parent"

@@ -192,7 +192,7 @@ public class Product extends AppCompatActivity {
                 try {
                     user_phone = Jobject.getString("phone");
                     Button delete_btn = (Button) findViewById(R.id.delete_button);
-                    if(user_phone.equals(phone_num)){
+                    if(!user_phone.equals(phone_num)){
                         delete_btn.setVisibility(View.INVISIBLE);
                     }
 
