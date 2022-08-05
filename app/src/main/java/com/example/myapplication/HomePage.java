@@ -11,6 +11,10 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -33,8 +37,12 @@ public class HomePage extends AppCompatActivity {
     private String user_phone;
     private String user_email;
     private Button add_product_button;
-    ArrayList<minimal_product> productsList;
+    volatile static ArrayList<minimal_product> productsList;
     ArrayList<minimal_product> final_productList;
+    GoogleSignInClient gsc;
+    GoogleSignInOptions gso;
+
+
 
 
     void get_user_info_request(String url, String json) {
@@ -150,6 +158,8 @@ public class HomePage extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_page);
+        gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestEmail().build();
+        gsc = GoogleSignIn.getClient(this,gso);
         Bundle bundle = getIntent().getExtras();
         productsList= new ArrayList<>();
         String user_email = bundle.getString("email");
@@ -168,15 +178,24 @@ public class HomePage extends AppCompatActivity {
         // creating the listview
         ListView mListView = (ListView) findViewById(R.id.listView);
         //get_all_products_request();
-        while(productsList.size() == 0) {
+//        while(productsList.size() == 0) {
+//
+//            try {
+//                get_all_products_request();
+//                //mListView.requestLayout();
+//                Thread.sleep(1000);
+//            } catch (InterruptedException e) {
+//                e.printStackTrace();
+//            }
+//        }
 
-            try {
+        try {
+            while(productsList.isEmpty()) {
                 get_all_products_request();
-                //mListView.requestLayout();
                 Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
             }
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
 
 
@@ -235,6 +254,13 @@ public class HomePage extends AppCompatActivity {
         Intent intent = new Intent(HomePage.this,Filter.class);
         intent.putExtra("email", user_email);
         startActivity(intent);
+    }
+
+    public void handleLogout(View view) {
+        gsc.signOut().addOnCompleteListener(this, task -> {
+            finish();
+            startActivity(new Intent(HomePage.this, MainActivity.class));
+        });
     }
 
 }

@@ -165,8 +165,8 @@
 
     <TextView
         android:id="@+id/description"
-        android:layout_width="264dp"
-        android:layout_height="121dp"
+        android:layout_width="267dp"
+        android:layout_height="87dp"
         android:layout_marginTop="376dp"
         android:text="loading..."
         app:layout_constraintEnd_toEndOf="parent"
@@ -211,8 +211,8 @@
 
     <ImageView
         android:id="@+id/imageView"
-        android:layout_width="135dp"
-        android:layout_height="117dp"
+        android:layout_width="157dp"
+        android:layout_height="154dp"
         android:layout_marginTop="508dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.057"

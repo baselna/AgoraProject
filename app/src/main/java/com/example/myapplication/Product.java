@@ -39,16 +39,16 @@ public class Product extends AppCompatActivity {
     private int product_id;
     private String user_phone;
 //    product details:
-    private String name;
-    private int category;
-    private int rating;
-    private String city;
-    private String region;
-    private String phone_num;
-    private String description;
-    private String has_img;
-    private String img_str;
-    private Bitmap img_decoded;
+    volatile static String name;
+    volatile static int category;
+    volatile static int rating;
+    volatile static String city;
+    volatile static String region;
+    volatile static String phone_num;
+    volatile static String description;
+    volatile static String has_img;
+    volatile static String img_str;
+    volatile static Bitmap img_decoded;
     private String url ="http://10.0.2.2:3000";
     public static final MediaType JSON = MediaType.get("application/json; charset=utf-8");
 
@@ -87,75 +87,6 @@ public class Product extends AppCompatActivity {
                     description = Jobject.getString("description");
                     has_img = Jobject.getString("has_image");
                     img_str =Jobject.getString("image_url");
-
-
-                    String str_category = "", str_rating = "";
-                    switch(category){
-                        case 0:
-                            str_category = "appliances";
-                            break;
-                        case 1:
-                            str_category = "clothing";
-                            break;
-                        case 2:
-                            str_category = "furniture";
-                            break;
-                        case 3:
-                            str_category = "plants and animals";
-                            break;
-                        case 4:
-                            str_category = "various";
-                            break;
-                    }
-
-                    switch (rating){
-                        case 1:
-                            str_rating = "very poor";
-                            break;
-                        case 2:
-                            str_rating = "poor";
-                            break;
-                        case 3:
-                            str_rating = "fair";
-                            break;
-                        case 4:
-                            str_rating = "good";
-                            break;
-                        case 5:
-                            str_rating = "very good";
-                            break;
-                    }
-
-
-                    TextView name_tv = (TextView) findViewById(R.id.name);
-                    name_tv.setText(name);
-                    TextView category_tv = (TextView) findViewById(R.id.category);
-                    category_tv.setText(str_category);
-                    TextView rating_tv = (TextView) findViewById(R.id.rating);
-                    rating_tv.setText(str_rating);
-                    TextView city_tv = (TextView) findViewById(R.id.city);
-                    city_tv.setText(city);
-                    TextView region_tv = (TextView) findViewById(R.id.region);
-                    region_tv.setText(region);
-                    TextView phone_tv = (TextView) findViewById(R.id.Phone_num);
-                    phone_tv.setText(phone_num);
-                    TextView desc_tv = (TextView) findViewById(R.id.description);
-                    desc_tv.setText(description);
-                    ImageView image_view = (ImageView) findViewById(R.id.imageView);
-                    if(has_img.equals("no")){
-                        image_view.setVisibility(View.INVISIBLE);
-                    }
-                    else{
-                        try {
-                            byte [] encodeByte = Base64.decode(img_str, android.util.Base64.DEFAULT);
-                            img_decoded = BitmapFactory.decodeByteArray(encodeByte,0,encodeByte.length);
-                            image_view.setImageBitmap(img_decoded);
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                    }
-
-
 
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -273,7 +204,77 @@ public class Product extends AppCompatActivity {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        get_product_request(obj.toString());
+        try {
+            get_product_request(obj.toString());
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        String str_category = "", str_rating = "";
+        switch(category){
+            case 0:
+                str_category = "appliances";
+                break;
+            case 1:
+                str_category = "clothing";
+                break;
+            case 2:
+                str_category = "furniture";
+                break;
+            case 3:
+                str_category = "plants and animals";
+                break;
+            case 4:
+                str_category = "various";
+                break;
+        }
+
+        switch (rating){
+            case 1:
+                str_rating = "very poor";
+                break;
+            case 2:
+                str_rating = "poor";
+                break;
+            case 3:
+                str_rating = "fair";
+                break;
+            case 4:
+                str_rating = "good";
+                break;
+            case 5:
+                str_rating = "very good";
+                break;
+        }
+
+
+        TextView name_tv = (TextView) findViewById(R.id.name);
+        name_tv.setText(name);
+        TextView category_tv = (TextView) findViewById(R.id.category);
+        category_tv.setText(str_category);
+        TextView rating_tv = (TextView) findViewById(R.id.rating);
+        rating_tv.setText(str_rating);
+        TextView city_tv = (TextView) findViewById(R.id.city);
+        city_tv.setText(city);
+        TextView region_tv = (TextView) findViewById(R.id.region);
+        region_tv.setText(region);
+        TextView phone_tv = (TextView) findViewById(R.id.Phone_num);
+        phone_tv.setText(phone_num);
+        TextView desc_tv = (TextView) findViewById(R.id.description);
+        desc_tv.setText(description);
+        ImageView image_view = (ImageView) findViewById(R.id.imageView);
+        if(has_img.equals("no")){
+            image_view.setVisibility(View.INVISIBLE);
+        }
+        else{
+            try {
+                byte [] encodeByte = Base64.decode(img_str, android.util.Base64.DEFAULT);
+                img_decoded = BitmapFactory.decodeByteArray(encodeByte,0,encodeByte.length);
+                image_view.setImageBitmap(img_decoded);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
 
         JSONObject obj2 = new JSONObject();
         try {
