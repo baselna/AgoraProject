@@ -38,7 +38,6 @@ public class Product extends AppCompatActivity {
     private String user_email;
     private int product_id;
     private String user_phone;
-//    product details:
     static public String name;
     static public int category;
     static public int rating;
@@ -123,9 +122,16 @@ public class Product extends AppCompatActivity {
                 try {
                     user_phone = Jobject.getString("phone");
                     Button delete_btn = (Button) findViewById(R.id.delete_button);
-                    if(!user_phone.equals(phone_num)){
-                        delete_btn.setVisibility(View.INVISIBLE);
-                    }
+
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            if(user_phone.equals(phone_num)){
+                                delete_btn.setVisibility(View.VISIBLE);
+                            }
+                        }
+                    });
+
 
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -194,6 +200,8 @@ public class Product extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_product);
+        Button delete_btn = (Button) findViewById(R.id.delete_button);
+        delete_btn.setVisibility((View.INVISIBLE));
         Bundle bundle = getIntent().getExtras();
         user_email = bundle.getString("email");
         product_id = bundle.getInt("product_id");
