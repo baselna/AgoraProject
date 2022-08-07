@@ -39,16 +39,16 @@ public class Product extends AppCompatActivity {
     private int product_id;
     private String user_phone;
 //    product details:
-    volatile static String name;
-    volatile static int category;
-    volatile static int rating;
-    volatile static String city;
-    volatile static String region;
-    volatile static String phone_num;
-    volatile static String description;
-    volatile static String has_img;
-    volatile static String img_str;
-    volatile static Bitmap img_decoded;
+    static public String name;
+    static public int category;
+    static public int rating;
+    static public String city;
+    static public String region;
+    static public String phone_num;
+    static public String description;
+    static public String has_img;
+    static public String img_str;
+    static public Bitmap img_decoded;
     private String url ="http://10.0.2.2:3000";
     public static final MediaType JSON = MediaType.get("application/json; charset=utf-8");
 

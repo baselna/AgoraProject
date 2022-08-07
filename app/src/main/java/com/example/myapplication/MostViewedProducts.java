@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -27,11 +28,12 @@ import okhttp3.Response;
 
 public class MostViewedProducts extends AppCompatActivity {
 
-    ArrayList<minimal_product> topProducts;
-    ArrayList<minimal_product> final_topProducts;
+    public static ArrayList<minimal_product> topProducts;
+    public static ArrayList<minimal_product> final_topProducts;
     private String user_email;
     private String url ="http://10.0.2.2:3000";
     public static final MediaType JSON = MediaType.get("application/json; charset=utf-8");
+
 
 
     void get_top_products_request(){

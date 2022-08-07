@@ -36,13 +36,10 @@ public class HomePage extends AppCompatActivity {
     public static final MediaType JSON = MediaType.get("application/json; charset=utf-8");
     private String user_phone;
     private String user_email;
-    private Button add_product_button;
-    volatile static ArrayList<minimal_product> productsList;
-    ArrayList<minimal_product> final_productList;
+    static public ArrayList<minimal_product> productsList;
+    static public ArrayList<minimal_product> final_productList;
     GoogleSignInClient gsc;
     GoogleSignInOptions gso;
-
-
 
 
     void get_user_info_request(String url, String json) {
@@ -173,21 +170,9 @@ public class HomePage extends AppCompatActivity {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        add_product_button = (Button) findViewById(R.id.add_product);
 
         // creating the listview
         ListView mListView = (ListView) findViewById(R.id.listView);
-        //get_all_products_request();
-//        while(productsList.size() == 0) {
-//
-//            try {
-//                get_all_products_request();
-//                //mListView.requestLayout();
-//                Thread.sleep(1000);
-//            } catch (InterruptedException e) {
-//                e.printStackTrace();
-//            }
-//        }
 
         try {
             while(productsList.isEmpty()) {
@@ -197,6 +182,7 @@ public class HomePage extends AppCompatActivity {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+
 
 
 //        minimal_product p1 = new minimal_product("x","haifa",1,1);
@@ -215,6 +201,7 @@ public class HomePage extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
                 JSONObject obj = new JSONObject();
+                int prod_id = adapter.getItem(position).getId();
                 try {
                     obj.put("email", user_email );
                     obj.put("product_id", adapter.getItem(position).getId());
@@ -224,7 +211,7 @@ public class HomePage extends AppCompatActivity {
                 }
 
                 inc_views_request("/inc_num_of_views", obj.toString());
-                navigateToProductActivity(adapter.getItem(position).getId());
+                navigateToProductActivity(prod_id);
 
             }
         });
