@@ -271,6 +271,11 @@ public class Product extends AppCompatActivity {
         TextView desc_tv = (TextView) findViewById(R.id.description);
         desc_tv.setText(description);
         ImageView image_view = (ImageView) findViewById(R.id.imageView);
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         if(has_img.equals("no")){
             image_view.setVisibility(View.INVISIBLE);
         }

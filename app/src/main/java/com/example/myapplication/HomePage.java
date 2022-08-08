@@ -1,5 +1,7 @@
 package com.example.myapplication;
 
+import static java.lang.Integer.parseInt;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -9,7 +11,9 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -250,4 +254,18 @@ public class HomePage extends AppCompatActivity {
         });
     }
 
+    public void radiusSearchBtnHandler(View view) {
+        EditText input  = (EditText) findViewById(R.id.editTextNumberDecimal);
+        String tmp = input.getText().toString();
+        if(tmp.matches("")){
+            Toast.makeText(this, "Please Enter Search Radius", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        int radius = parseInt(tmp);
+        finish();
+        Intent intent = new Intent(HomePage.this,RadiusSearch.class);
+        intent.putExtra("email", user_email);
+        intent.putExtra("radius", radius);
+        startActivity(intent);
+    }
 }
