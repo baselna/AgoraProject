@@ -42,10 +42,7 @@ public class RadiusSearch extends Activity implements LocationListener {
     protected LocationManager locationManager;
     protected LocationListener locationListener;
     protected Context context;
-    String lat;
-    String provider;
-    protected String latitude, longitude;
-    protected boolean gps_enabled, network_enabled;
+
 
     private String url ="http://10.0.2.2:3000";
     public static final MediaType JSON = MediaType.get("application/json; charset=utf-8");
@@ -85,7 +82,6 @@ public class RadiusSearch extends Activity implements LocationListener {
             };
             ActivityCompat.requestPermissions(this,INITIAL_PERMS, INITIAL_REQUEST);
 
-//            return;
         }
 
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
