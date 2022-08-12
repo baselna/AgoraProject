@@ -4,18 +4,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".AddImageActivity">
-    <!--    <EditText-->
-    <!--        android:layout_width="match_parent"-->
-    <!--        android:layout_height="wrap_content"-->
-    <!--        android:id="@+id/imgPath"-->
-    <!--        android:hint="Image Path Appears Here"/>-->
+    tools:context=".AddImageActivity"
+    android:background="@color/light_blue">
+
 
     <Button
         android:id="@+id/add_image"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="76dp"
+        android:layout_marginTop="220dp"
         android:text="Select Image"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
@@ -27,7 +24,7 @@
         android:id="@+id/numSelectedImages"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="168dp"
+        android:layout_marginTop="292dp"
         android:text="No Image Selected."
         android:textAlignment="center"
         android:textColor="#988734"
@@ -62,26 +59,37 @@
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="220dp"
+        android:layout_marginTop="356dp"
         android:onClick="connectServer"
         android:text="Upload"
-        android:textColor="#6CA22F"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-         />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/skip_button"
         android:layout_width="413dp"
         android:layout_height="49dp"
-        android:layout_marginTop="296dp"
+        android:layout_marginTop="432dp"
         android:onClick="navigateToHomepage"
-        android:text="I'll upload later :)"
+        android:text="Maybe i'll upload later :)"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textView17"
+        android:layout_width="341dp"
+        android:layout_height="108dp"
+        android:layout_marginTop="72dp"
+        android:text="we recommend adding an image as it gives a better illustration of the product (optional)."
+        android:textAlignment="center"
+        android:textColor="@color/black"
+        android:textSize="23dp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 

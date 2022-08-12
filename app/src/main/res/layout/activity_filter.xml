@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Filter">
+    tools:context=".Filter"
+    android:background="@color/light_blue">
 
     <!--Button to open the image selector-->
 
@@ -72,13 +73,14 @@
 
     <TextView
         android:id="@+id/textView6"
-        android:layout_width="267dp"
-        android:layout_height="54dp"
+        android:layout_width="347dp"
+        android:layout_height="56dp"
         android:layout_marginTop="32dp"
-        android:textSize="18dp"
         android:text="please select desired attributes:"
+        android:textColor="@color/black"
+        android:textSize="23dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.077"
+        app:layout_constraintHorizontal_bias="0.156"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -87,6 +89,8 @@
         android:layout_width="108dp"
         android:layout_height="37dp"
         android:layout_marginTop="112dp"
+        android:textColor="@color/black"
+        android:textSize="17dp"
         android:text="City:"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.052"
@@ -98,6 +102,8 @@
         android:layout_width="108dp"
         android:layout_height="37dp"
         android:layout_marginTop="180dp"
+        android:textColor="@color/black"
+        android:textSize="17dp"
         android:text="Region:"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.052"
@@ -109,6 +115,8 @@
         android:layout_width="108dp"
         android:layout_height="37dp"
         android:layout_marginTop="252dp"
+        android:textColor="@color/black"
+        android:textSize="17dp"
         android:text="Condition:"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.052"
@@ -120,6 +128,8 @@
         android:layout_width="108dp"
         android:layout_height="37dp"
         android:layout_marginTop="332dp"
+        android:textColor="@color/black"
+        android:textSize="17dp"
         android:text="Category:"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.052"
@@ -128,11 +138,11 @@
 
     <Button
         android:id="@+id/button3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="112dp"
+        android:layout_height="47dp"
         android:layout_marginTop="524dp"
-        android:text="Submit"
         android:onClick="submitbuttonHandler"
+        android:text="Submit"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.848"
         app:layout_constraintStart_toStartOf="parent"
@@ -143,6 +153,8 @@
         android:layout_width="209dp"
         android:layout_height="33dp"
         android:layout_marginTop="404dp"
+        android:textColor="@color/black"
+        android:textSize="17dp"
         android:text="Has Image:"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.049"

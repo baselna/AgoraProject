@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".FilteredProducts">
+    tools:context=".FilteredProducts"
+    android:background="@color/light_blue">
 
     <TextView
         android:id="@+id/all_products"
@@ -13,7 +14,7 @@
         android:layout_marginTop="16dp"
         android:gravity="center_horizontal"
         android:text="Filtered Products"
-        android:textColor="#3366cc"
+        android:textColor="@color/black"
         android:textSize="40dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
@@ -27,7 +28,8 @@
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:layout_marginStart="-4dp"
-        android:layout_marginTop="87dp" />
+        android:layout_marginTop="87dp"
+   />
 
     <Button
         android:id="@+id/button4"

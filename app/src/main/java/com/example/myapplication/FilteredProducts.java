@@ -1,13 +1,17 @@
 package com.example.myapplication;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.TypedValue;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -65,6 +69,7 @@ public class FilteredProducts extends AppCompatActivity {
         }
         ListView mListView = (ListView) findViewById(R.id.listView);
         ProductsListAdapter adapter = new ProductsListAdapter(this, R.layout.adapter_view_layout, productsList);
+
         mListView.setAdapter(adapter);
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override

@@ -4,7 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".AddProduct">
+    tools:context=".AddProduct"
+    android:background="@color/light_blue">
+
     <TextView
         android:id="@+id/textView3"
         android:layout_width="wrap_content"
@@ -13,7 +15,7 @@
         android:text="@string/add_product"
         tools:layout_editor_absoluteX="173dp"
         tools:layout_editor_absoluteY="90dp"
-        android:textColor="#3366cc"
+        android:textColor="#6F4AB1"
         android:textSize="34dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.436"
@@ -27,6 +29,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="120dp"
         android:ems="10"
+        android:maxLength="50"
         android:hint="name"
         android:inputType="text"
         app:layout_constraintEnd_toEndOf="parent"
@@ -40,6 +43,7 @@
         android:layout_height="109dp"
         android:layout_marginTop="192dp"
         android:ems="10"
+        android:maxLength="200"
         android:hint="Description"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.079"
@@ -60,10 +64,10 @@
         android:layout_marginBottom="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintHorizontal_bias="0.928"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.627" />
+        app:layout_constraintVertical_bias="0.657" />
 
     <Spinner
         android:id="@+id/spinner2"
@@ -75,10 +79,10 @@
         android:layout_marginBottom="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.831"
+        app:layout_constraintHorizontal_bias="0.733"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.499" />
+        app:layout_constraintVertical_bias="0.52" />
 
     <Button
         android:id="@+id/button"
@@ -136,10 +140,10 @@
         android:layout_marginBottom="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.931"
+        app:layout_constraintHorizontal_bias="0.893"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.747" />
+        app:layout_constraintVertical_bias="0.774" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

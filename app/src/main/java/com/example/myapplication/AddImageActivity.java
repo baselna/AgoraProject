@@ -276,57 +276,6 @@ public class AddImageActivity extends AppCompatActivity {
         });
     }
 
-    public void selectImage(View v) {
-        ActivityResultLauncher<Intent> launchSomeActivity
-                = registerForActivityResult(
-                new ActivityResultContracts
-                        .StartActivityForResult(),
-                result -> {
-                    if (result.getResultCode()
-                            == Activity.RESULT_OK) {
-                        String currentImagePath;
-                        selectedImagesPaths = new ArrayList<>();
-                        TextView numSelectedImages = findViewById(R.id.numSelectedImages);
-                        if (result.getData().getData() != null) {
-                            Uri uri = result.getData().getData();
-                            currentImagePath = getPath(uri);
-                            Log.d("ImageDetails", "Single Image URI : " + uri);
-                            Log.d("ImageDetails", "Single Image Path : " + currentImagePath);
-                            selectedImagesPaths.add(currentImagePath);
-                            imagesSelected = true;
-                            numSelectedImages.setText("Image selected successfully");
-                        } else {
-                            // When multiple images are selected.
-                            // Thanks tp Laith Mihyar for this Stackoverflow answer : https://stackoverflow.com/a/34047251/5426539
-                            if (result.getData().getClipData() != null) {
-                                ClipData clipData = result.getData().getClipData();
-                                for (int i = 0; i < clipData.getItemCount(); i++) {
-
-                                    ClipData.Item item = clipData.getItemAt(i);
-                                    Uri uri = item.getUri();
-
-                                    currentImagePath = getPath(uri);
-                                    selectedImagesPaths.add(currentImagePath);
-                                    Log.d("ImageDetails", "Image URI " + i + " = " + uri);
-                                    Log.d("ImageDetails", "Image Path " + i + " = " + currentImagePath);
-                                    imagesSelected = true;
-                                    numSelectedImages.setText("Image selected successfully");
-                                }
-                            }
-                        }
-                    } else {
-                        Toast.makeText(this, "You haven't Picked any Image.", Toast.LENGTH_LONG).show();
-                    }
-                    Toast.makeText(getApplicationContext(), selectedImagesPaths.size() + " Image(s) Selected.", Toast.LENGTH_LONG).show();
-
-    });
-        Intent intent = new Intent();
-        intent.setType("*/*");
-        intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
-        intent.setAction(Intent.ACTION_GET_CONTENT);
-        launchSomeActivity.launch(intent);
-        //startActivityForResult(Intent.createChooser(intent, "Select Picture"), SELECT_MULTIPLE_IMAGES);
-    }
 
     public String getPath(final Uri uri) {
         // check here to KITKAT or new version

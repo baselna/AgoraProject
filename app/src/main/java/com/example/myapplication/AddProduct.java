@@ -73,30 +73,6 @@ public class AddProduct extends AppCompatActivity implements
 
         array_cities = new ArrayList<String>();
 
-        //option 1
-       /* final CountDownLatch latch = new CountDownLatch(1);
-        new Thread(() -> {
-            //4
-            //do your logic here in thread#2
-            get_all_cities();
-            //then release the lock
-            //5
-            latch.countDown();
-        }).start();
-
-        try {
-            //3 this method will block the thread of latch untill its released later from thread#2
-            latch.await();
-        } catch (InterruptedException e) {
-            new_cities = array_cities.toArray(new String[0]);
-            e.printStackTrace();
-        }
-        // You reach here after  latch.countDown() is called from thread#2
-        new_cities = array_cities.toArray(new String[0]); */ // @option1 ended
-
-//        while(array_cities.isEmpty()) {
-//                get_all_cities();
-//            }
         try {
             while(array_cities.isEmpty()) {
                 get_all_cities();
