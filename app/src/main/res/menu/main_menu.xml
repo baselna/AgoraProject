@@ -13,7 +13,7 @@
         app:showAsAction="never"/>
 
     <item android:id="@+id/action_top_viewed"
-        android:title="Get Most Viewed Products"
+        android:title="Most Viewed Products"
         app:showAsAction="never"/>
 
     <item android:id="@+id/action_profile"

@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -29,6 +30,7 @@ public class Profile extends AppCompatActivity {
     private String user_email;
     static public ArrayList<minimal_product> productsList;
     static public ArrayList<minimal_product> final_productList;
+    int empty_list = -1;
     private String url ="http://10.0.2.2:3000";
     public static final MediaType JSON = MediaType.get("application/json; charset=utf-8");
 
@@ -50,36 +52,41 @@ public class Profile extends AppCompatActivity {
         }
 
         try {
-            while(productsList.isEmpty()) {
+            while(productsList.isEmpty() && empty_list == -1) {
                 get_my_products_request(obj.toString());
                 Thread.sleep(1000);
             }
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+        if(empty_list == 1) {
+            final_productList = new ArrayList<minimal_product>(productsList);
+            ProductsListAdapter adapter = new ProductsListAdapter(this, R.layout.adapter_view_layout, final_productList);
+            mListView.setAdapter(adapter);
+            mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-        final_productList = new ArrayList<minimal_product>(productsList);
-        ProductsListAdapter adapter = new ProductsListAdapter(this, R.layout.adapter_view_layout, final_productList);
-        mListView.setAdapter(adapter);
-        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    JSONObject obj = new JSONObject();
+                    int prod_id = adapter.getItem(position).getId();
+                    try {
+                        obj.put("email", user_email);
+                        obj.put("product_id", adapter.getItem(position).getId());
 
-                JSONObject obj = new JSONObject();
-                int prod_id = adapter.getItem(position).getId();
-                try {
-                    obj.put("email", user_email );
-                    obj.put("product_id", adapter.getItem(position).getId());
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
 
-                } catch (JSONException e) {
-                    e.printStackTrace();
+                    inc_views_request("/inc_num_of_views", obj.toString());
+                    navigateToProductActivity(prod_id);
+
                 }
-
-                inc_views_request("/inc_num_of_views", obj.toString());
-                navigateToProductActivity(prod_id);
-
-            }
-        });
+            });
+        }
+        else{
+            TextView msg = findViewById(R.id.empty_list);
+            msg.setVisibility(View.VISIBLE);
+        }
 
     }
 
@@ -109,6 +116,7 @@ public class Profile extends AppCompatActivity {
                 }
                 try {
                     JSONArray arr =(JSONArray) Jobject.get("products");
+                    empty_list = Jobject.getInt("flag");
                     for (int i = 0; i < arr.length(); i++) {
                         JSONObject cur = (JSONObject) arr.get(i);
                         minimal_product tmp = new minimal_product(cur.getString("name"),

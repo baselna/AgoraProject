@@ -40,7 +40,6 @@ import android.util.Log;
 public class RadiusSearch extends Activity implements LocationListener {
 
     protected LocationManager locationManager;
-    protected LocationListener locationListener;
     protected Context context;
 
 
@@ -53,7 +52,49 @@ public class RadiusSearch extends Activity implements LocationListener {
     Location loc;
 
 
+    void get_products_request(String json) {
+        String new_url = this.url + "/get_products_in_search_radius";
+        OkHttpClient client = new OkHttpClient();
+        RequestBody body = RequestBody.create(json, JSON);
+        Request request = new Request.Builder()
+                .url(new_url)
+                .post(body)
+                .build();
 
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(@NonNull Call call, @NonNull IOException e) {
+                e.printStackTrace();
+            }
+
+            @Override
+            public void onResponse(Call call, final Response response) throws IOException {
+
+                final String responseData = response.body().string();
+                JSONObject Jobject = null;
+                try {
+                    Jobject = new JSONObject(responseData);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                try {
+                    JSONArray arr =(JSONArray) Jobject.get("products");
+
+                    for (int i = 0; i < arr.length(); i++) {
+                        JSONObject cur = (JSONObject) arr.get(i);
+                        minimal_product tmp = new minimal_product(cur.getString("name"),
+                                cur.getString("city"), cur.getInt("rating"),
+                                cur.getInt("ID"));
+                        productsList.add(tmp);
+                    }
+                    int y =0;
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        });
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,8 +109,6 @@ public class RadiusSearch extends Activity implements LocationListener {
 
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
             // here to request the missing permissions, and then overriding
             //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
             //                                          int[] grantResults)
@@ -143,8 +182,6 @@ public class RadiusSearch extends Activity implements LocationListener {
 
     @Override
     public void onLocationChanged(Location location) {
-//        txtLat = (TextView) findViewById(R.id.textview1);
-//        txtLat.setText("Latitude:" + location.getLatitude() + ", Longitude:" + location.getLongitude());
     }
 
     @Override
@@ -162,48 +199,6 @@ public class RadiusSearch extends Activity implements LocationListener {
         Log.d("Latitude","status");
     }
 
-    void get_products_request(String json) {
-        String new_url = this.url + "/get_products_in_search_radius";
-        OkHttpClient client = new OkHttpClient();
-        RequestBody body = RequestBody.create(json, JSON);
-        Request request = new Request.Builder()
-                .url(new_url)
-                .post(body)
-                .build();
-
-        client.newCall(request).enqueue(new Callback() {
-            @Override
-            public void onFailure(@NonNull Call call, @NonNull IOException e) {
-                e.printStackTrace();
-            }
-
-            @Override
-            public void onResponse(Call call, final Response response) throws IOException {
-
-                final String responseData = response.body().string();
-                JSONObject Jobject = null;
-                try {
-                    Jobject = new JSONObject(responseData);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-                try {
-                    JSONArray arr =(JSONArray) Jobject.get("products");
-                    for (int i = 0; i < arr.length(); i++) {
-                        JSONObject cur = (JSONObject) arr.get(i);
-                        minimal_product tmp = new minimal_product(cur.getString("name"),
-                                cur.getString("city"), cur.getInt("rating"),
-                                cur.getInt("ID"));
-                        productsList.add(tmp);
-                    }
-                    int y =0;
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-
-            }
-        });
-    }
 
     void navigateToProductActivity(int product_id){
         finish();

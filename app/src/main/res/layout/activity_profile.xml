@@ -40,5 +40,16 @@
         android:layout_marginStart="0dp"
         android:layout_marginTop="140dp" />
 
+    <TextView
+        android:id="@+id/empty_list"
+        android:layout_width="match_parent"
+        android:layout_height="611dp"
+        android:visibility="invisible"
+        android:textColor="@color/black"
+        android:textAlignment="center"
+        android:textSize="30dp"
+        android:text="You don't have any donations yet."
+        android:layout_marginTop="200dp"/>
+
 
 </RelativeLayout>
