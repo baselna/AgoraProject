@@ -1,22 +1,15 @@
 package com.example.myapplication;
 
-import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
-import android.os.StrictMode;
 import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.activity.result.ActivityResult;
 
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -46,7 +39,7 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 
 
-public class MainActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener {
+public class MainActivity<Public> extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener {
 
     private String url="http://10.0.2.2:3000";//****Put your  URL here******
     private String POST="POST";
@@ -138,10 +131,6 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
         }else{
             Toast.makeText(getApplicationContext(),"Sign in cancel",Toast.LENGTH_LONG).show();
         }
-    }
-    private void gotoProfile(){
-        Intent intent=new Intent(MainActivity.this,ProfileActivity.class);
-        startActivity(intent);
     }
 
     @Override

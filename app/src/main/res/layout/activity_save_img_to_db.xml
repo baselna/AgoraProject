@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".SaveImgToDB">
+    tools:context=".SaveImgToDB"
+    android:background="@color/light_blue">
 
     <TextView
         android:id="@+id/textView7"
@@ -12,7 +13,7 @@
         android:layout_height="200dp"
         android:layout_marginTop="208dp"
         android:textAlignment="center"
-        android:textColor="#3366cc"
+        android:textColor="#090A0B"
         android:textSize="25dp"
         android:text="Please wait,we are uploading your product image. Will take you to our homepage in few moments."
         app:layout_constraintEnd_toEndOf="parent"

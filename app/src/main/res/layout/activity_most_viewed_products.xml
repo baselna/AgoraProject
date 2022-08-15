@@ -4,7 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MostViewedProducts">
+    tools:context=".MostViewedProducts"
+    android:background="@color/light_blue"
+    >
 
     <TextView
         android:id="@+id/all_products"
@@ -13,7 +15,7 @@
         android:layout_marginTop="16dp"
         android:gravity="center_horizontal"
         android:text="Most Viewed Products"
-        android:textColor="#3366cc"
+        android:textColor="#151617"
         android:textSize="30dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
@@ -22,11 +24,11 @@
 
     <Button
         android:id="@+id/add_product"
-        android:layout_width="341dp"
+        android:layout_width="286dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="96dp"
         android:onClick="returnToHomepagebuttonHandler"
-        android:text="Return to Homepage"
+        android:text="Back to Homepage"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"

@@ -8,6 +8,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -222,37 +225,37 @@ public class HomePage extends AppCompatActivity {
 
     }
 
-    public void addprudoctbuttonHandler(View view) {
-        finish();
-        Bundle bundle = getIntent().getExtras();
-        String user_email = bundle.getString("email");
-        Intent intent = new Intent(HomePage.this,AddProduct.class);
-        intent.putExtra("phone", user_phone);
-        intent.putExtra("email", user_email);
-        startActivity(intent);
-    }
+//    public void addprudoctbuttonHandler(View view) {
+//        finish();
+//        Bundle bundle = getIntent().getExtras();
+//        String user_email = bundle.getString("email");
+//        Intent intent = new Intent(HomePage.this,AddProduct.class);
+//        intent.putExtra("phone", user_phone);
+//        intent.putExtra("email", user_email);
+//        startActivity(intent);
+//    }
 
-    public void mostviewedbuttonHandler(View view) {
-        finish();
-        Intent intent = new Intent(HomePage.this,MostViewedProducts.class);
-        intent.putExtra("email", user_email);
-        startActivity(intent);
-    }
+//    public void mostviewedbuttonHandler(View view) {
+//        finish();
+//        Intent intent = new Intent(HomePage.this,MostViewedProducts.class);
+//        intent.putExtra("email", user_email);
+//        startActivity(intent);
+//    }
 
 
-    public void filterbuttonHandler(View view) {
-        finish();
-        Intent intent = new Intent(HomePage.this,Filter.class);
-        intent.putExtra("email", user_email);
-        startActivity(intent);
-    }
+//    public void filterbuttonHandler(View view) {
+//        finish();
+//        Intent intent = new Intent(HomePage.this,Filter.class);
+//        intent.putExtra("email", user_email);
+//        startActivity(intent);
+//    }
 
-    public void handleLogout(View view) {
-        gsc.signOut().addOnCompleteListener(this, task -> {
-            finish();
-            startActivity(new Intent(HomePage.this, MainActivity.class));
-        });
-    }
+//    public void handleLogout(View view) {
+//        gsc.signOut().addOnCompleteListener(this, task -> {
+//            finish();
+//            startActivity(new Intent(HomePage.this, MainActivity.class));
+//        });
+//    }
 
     public void radiusSearchBtnHandler(View view) {
         EditText input  = (EditText) findViewById(R.id.editTextNumberDecimal);
@@ -267,5 +270,61 @@ public class HomePage extends AppCompatActivity {
         intent.putExtra("email", user_email);
         intent.putExtra("radius", radius);
         startActivity(intent);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu){
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.main_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_add_product:
+                finish();
+                Bundle bundle = getIntent().getExtras();
+                String user_email = bundle.getString("email");
+                Intent intent = new Intent(HomePage.this,AddProduct.class);
+                intent.putExtra("phone", user_phone);
+                intent.putExtra("email", user_email);
+                startActivity(intent);
+                return true;
+
+            case R.id.action_top_viewed:
+                finish();
+                Intent __intent = new Intent(HomePage.this,MostViewedProducts.class);
+                __intent.putExtra("email", this.user_email);
+                startActivity(__intent);
+                return true;
+
+            case R.id.action_filter:
+                finish();
+                Intent _intent = new Intent(HomePage.this,Filter.class);
+                _intent.putExtra("email", this.user_email);
+                startActivity(_intent);
+                return true;
+
+            case R.id.action_profile:
+                finish();
+                Intent ___intent = new Intent(HomePage.this,Profile.class);
+                ___intent.putExtra("email", this.user_email);
+                startActivity(___intent);
+                return true;
+
+            case R.id.action_logout:
+                gsc.signOut().addOnCompleteListener(this, task -> {
+                    finish();
+                    startActivity(new Intent(HomePage.this, MainActivity.class));
+                });
+                return true;
+
+            default:
+                // If we got here, the user's action was not recognized.
+                // Invoke the superclass to handle it.
+                return super.onOptionsItemSelected(item);
+
+        }
     }
 }

@@ -4,21 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Product">
+    tools:context=".Product"
+    android:background="@color/light_blue">
 
-<!--    <TextView-->
-<!--        android:id="@+id/title"-->
-<!--        android:layout_width="169dp"-->
-<!--        android:layout_height="37dp"-->
-<!--        android:text="Product Info"-->
-<!--        android:textAlignment="center"-->
-<!--        android:textSize="30dp"-->
-<!--        android:textColor="#3366cc"-->
-<!--        tools:layout_editor_absoluteX="113dp"-->
-<!--        tools:layout_editor_absoluteY="16dp"-->
-<!--        app:layout_constraintEnd_toEndOf="parent"-->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
-<!--        app:layout_constraintTop_toTopOf="parent"/>-->
+
 
     <TextView
         android:id="@+id/textView8"
@@ -174,16 +163,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-<!--    <ImageButton-->
-<!--        android:id="@+id/imageButton"-->
-<!--        android:layout_width="122dp"-->
-<!--        android:layout_height="106dp"-->
-<!--        android:layout_marginTop="512dp"-->
-<!--        app:layout_constraintEnd_toEndOf="parent"-->
-<!--        app:layout_constraintHorizontal_bias="0.041"-->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
-<!--        app:layout_constraintTop_toTopOf="parent"-->
-<!--        app:srcCompat="@android:drawable/ic_menu_gallery" />-->
 
     <Button
         android:id="@+id/button2"
