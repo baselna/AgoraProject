@@ -34,6 +34,7 @@ public class FilteredProducts extends AppCompatActivity {
 
     ArrayList<minimal_product> productsList;
     String user_email;
+    int empty_list = -1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,28 +68,34 @@ public class FilteredProducts extends AppCompatActivity {
             }
             productsList.add(tmp);
         }
-        ListView mListView = (ListView) findViewById(R.id.listView);
-        ProductsListAdapter adapter = new ProductsListAdapter(this, R.layout.adapter_view_layout, productsList);
+        if(productsList.size() == 0){
+            TextView msg = findViewById(R.id.empty_list);
+            msg.setVisibility(View.VISIBLE);
+        }
+        else {
+            ListView mListView = (ListView) findViewById(R.id.listView);
+            ProductsListAdapter adapter = new ProductsListAdapter(this, R.layout.adapter_view_layout, productsList);
 
-        mListView.setAdapter(adapter);
-        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            mListView.setAdapter(adapter);
+            mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 //
-                JSONObject obj = new JSONObject();
-                try {
-                    obj.put("email", user_email );
-                    obj.put("product_id", adapter.getItem(position).getId());
+                    JSONObject obj = new JSONObject();
+                    try {
+                        obj.put("email", user_email);
+                        obj.put("product_id", adapter.getItem(position).getId());
 
-                } catch (JSONException e) {
-                    e.printStackTrace();
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+                    inc_views_request("/inc_num_of_views", obj.toString());
+                    navigateToProductActivity(adapter.getItem(position).getId());
+
                 }
-
-                inc_views_request("/inc_num_of_views", obj.toString());
-                navigateToProductActivity(adapter.getItem(position).getId());
-
-            }
-        });
+            });
+        }
 
     }
 

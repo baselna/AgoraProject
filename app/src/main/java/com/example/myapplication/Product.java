@@ -122,12 +122,16 @@ public class Product extends AppCompatActivity {
                 try {
                     user_phone = Jobject.getString("phone");
                     Button delete_btn = (Button) findViewById(R.id.delete_button);
-
+                    Button img_btn = (Button) findViewById(R.id.add_img);
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
                             if(user_phone.equals(phone_num)){
                                 delete_btn.setVisibility(View.VISIBLE);
+                                img_btn.setVisibility(View.VISIBLE);
+                            }
+                            if(has_img.equals("yes")){
+                                img_btn.setVisibility(View.INVISIBLE);
                             }
                         }
                     });
@@ -186,6 +190,11 @@ public class Product extends AppCompatActivity {
             e.printStackTrace();
         }
         delete_product_request(obj.toString());
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         returnToHomepagebuttonHandler(view);
     }
 
@@ -196,12 +205,22 @@ public class Product extends AppCompatActivity {
         startActivity(intent);
     }
 
+    public void addImgButtonHandler(View view) {
+        finish();
+        Intent intent = new Intent(Product.this,AddImageActivity.class);
+        intent.putExtra("email", user_email);
+        intent.putExtra("product_id", product_id);
+        startActivity(intent);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_product);
         Button delete_btn = (Button) findViewById(R.id.delete_button);
         delete_btn.setVisibility((View.INVISIBLE));
+        Button img_btn = (Button) findViewById(R.id.add_img);
+        img_btn.setVisibility(View.INVISIBLE);
         Bundle bundle = getIntent().getExtras();
         user_email = bundle.getString("email");
         product_id = bundle.getInt("product_id");

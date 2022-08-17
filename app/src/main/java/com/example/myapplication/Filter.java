@@ -310,4 +310,11 @@ public class Filter extends AppCompatActivity implements
             e.printStackTrace();
         }
     }
+
+    public void returnToHomepagebuttonHandler(View view) {
+        finish();
+        Intent intent = new Intent(Filter.this,HomePage.class);
+        intent.putExtra("email", donor_email);
+        startActivity(intent);
+    }
 }

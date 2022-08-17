@@ -28,15 +28,31 @@
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:layout_marginStart="-4dp"
-        android:layout_marginTop="87dp" />
+        android:layout_marginTop="87dp">
+
+    </ListView>
 
     <Button
         android:id="@+id/button4"
-        android:layout_width="154dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginVertical="628dp"
+        android:backgroundTint="#FFC107"
         android:layout_marginLeft="220dp"
         android:layout_marginTop="30dp"
         android:onClick="returnToHomepagebuttonHandler"
         android:text="Back to homepage" />
+
+    <TextView
+        android:id="@+id/empty_list"
+        android:layout_width="380dp"
+        android:layout_height="389dp"
+        android:layout_marginTop="200dp"
+        android:text="No products found!"
+        android:textAlignment="center"
+        android:textColor="@color/black"
+        android:textSize="30dp"
+        android:visibility="invisible" />
+
+
 </RelativeLayout>
