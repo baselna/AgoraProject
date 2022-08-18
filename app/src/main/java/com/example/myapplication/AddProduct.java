@@ -25,6 +25,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -175,15 +176,15 @@ public class AddProduct extends AppCompatActivity implements
     public void onNothingSelected(AdapterView<?> arg0) {
         if(arg0.getId() == R.id.spinner2) {
             //Toast.makeText(getApplicationContext(), rating[position], Toast.LENGTH_LONG).show();
-            chosen_rating = 1;
+            chosen_rating = -1;
         }
         else if(arg0.getId() == R.id.category_spinner) {
             //Toast.makeText(getApplicationContext(), category[position], Toast.LENGTH_LONG).show();
-            chosen_category = 0;
+            chosen_category = -1;
         }
         else{
             //Toast.makeText(getApplicationContext(), new_cities[position], Toast.LENGTH_LONG).show();
-            chosen_city = new_cities[0];
+            chosen_city = "";
         }
     }
 
@@ -238,6 +239,12 @@ public class AddProduct extends AppCompatActivity implements
         //Decide what happens when the user clicks the submit button
         String name = nameEditText.getText().toString();
         String desc = descriptionEditText.getText().toString();
+
+        if(chosen_city.equals("") || chosen_category == -1 || chosen_rating == -1
+         || name.equals("") || desc.equals("")){
+            Toast.makeText(this, "Please fill all the details!", Toast.LENGTH_SHORT).show();
+            return;
+        }
 
         Bundle bundle = getIntent().getExtras();
         String donor_phone = bundle.getString("phone");

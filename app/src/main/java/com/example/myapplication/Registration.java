@@ -35,6 +35,11 @@ public class Registration extends AppCompatActivity {
         Bundle bundle = getIntent().getExtras();
         String email = bundle.getString("email");
 
+        if(fullName.equals("") || phoneNum.equals("")){
+            Toast.makeText(this, "Please fill all the details!", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         if (!checkBoxState){
             Toast.makeText(getApplicationContext(),"terms not approved",Toast.LENGTH_LONG).show();
         }
